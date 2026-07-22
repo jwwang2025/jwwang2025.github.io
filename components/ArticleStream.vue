@@ -1,13 +1,11 @@
 <template>
   <div class="article-stream">
-    <ArticleCard v-for="post in posts" :key="post.path" :post="post" />
+    <ArticleLine v-for="post in posts" :key="post.path" :post="post" />
   </div>
 </template>
 
 <script setup lang="ts">
 import type { PostMeta } from '~/server/api/posts.get'
 
-defineProps<{
-  posts: PostMeta[]
-}>()
+defineProps<{ posts: PostMeta[] }>()
 </script>

@@ -1,33 +1,64 @@
-import { readFileSync, readdirSync } from 'node:fs'
-import { join } from 'node:path'
+/**
+ * server/api/posts.get.ts
+ *
+ * 直接从文件系统读取 markdown 文件并解析 frontmatter。
+ * 绕过 @nuxt/content SQLite WASM 在静态构建 SSR 阶段未初始化的问题。
+ * nuxt generate prerender 时 Nitro server 可访问文件系统，此方式完全可靠。
+ */
+import { readdirSync, readFileSync } from 'node:fs'
+import { join, basename } from 'node:path'
 
 export interface PostMeta {
-  path: string
   slug: string
+  path: string
   title: string
-  description?: string
-  excerpt?: string
   date: string
   tags: string[]
-  readingTime?: number
-  categories?: string[]
+  description: string
+  excerpt: string
+  draft: boolean
+  hidden: boolean
+  published: boolean
+  readingTime: number
+  series?: string
+  seriesOrder?: number
 }
 
-function parseFrontmatter(source: string): Record<string, unknown> {
+/** 简单 frontmatter 解析（YAML only） */
+function parseFrontmatter(source: string): { data: Record<string, unknown>; body: string } {
   const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---/)
-  if (!match) return {}
+  if (!match) return { data: {}, body: source }
   const yaml = match[1]
+  const body = source.slice(match[0].length)
   const data: Record<string, unknown> = {}
+
   for (const line of yaml.split('\n')) {
     const colon = line.indexOf(':')
     if (colon < 0) continue
     const key = line.slice(0, colon).trim()
     const val = line.slice(colon + 1).trim()
     if (!key || key.startsWith('-')) continue
+
     if (val === 'true') { data[key] = true; continue }
     if (val === 'false') { data[key] = false; continue }
-    if (val) data[key] = val.replace(/^['"]|['"]$/g, '')
+    if (val === '' || val === null || val === 'null') { data[key] = null; continue }
+    // numeric
+    if (/^\d+$/.test(val)) { data[key] = parseInt(val, 10); continue }
+    // array start (next lines are - items)
+    if (val === '') { data[key] = []; continue }
+    data[key] = val.replace(/^['"]|['"]$/g, '')
   }
+
+  // Parse inline arrays: tags: [LLM, Agent]
+  const arrayInline = yaml.match(new RegExp(`(\\w+):\\s*\\[([^\\]]+)\\]`, 'g'))
+  if (arrayInline) {
+    for (const m of arrayInline) {
+      const [, k, v] = m.match(/([\w-]+):\s*\[([^\]]+)\]/) ?? []
+      if (k && v) data[k] = v.split(',').map((s: string) => s.trim().replace(/^['"]|['"]$/g, ''))
+    }
+  }
+
+  // Parse multi-line arrays:  - item
   const mlArray = yaml.matchAll(/^(\w+):\s*\n((?:\s+-\s+.+\n?)*)/gm)
   for (const m of mlArray) {
     const [, k, block] = m
@@ -35,39 +66,64 @@ function parseFrontmatter(source: string): Record<string, unknown> {
       .filter((l) => l.trim().startsWith('-'))
       .map((l) => l.trim().replace(/^-\s*/, '').replace(/^['"]|['"]$/g, ''))
   }
-  return data
+
+  return { data, body }
 }
 
-export default defineEventHandler(() => {
+/** 估算阅读时间 */
+function readingTime(body: string): number {
+  const zh = body.match(/[一-鿿]/g)?.length ?? 0
+  const en = body.replace(/[一-鿿]/g, ' ').match(/[A-Za-z0-9]+/g)?.length ?? 0
+  return Math.max(1, Math.ceil(zh / 300 + en / 200))
+}
+
+function excerptFromBody(body: string): string {
+  return body
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/!\[[^\]]*]\([^)]*\)/g, ' ')
+    .replace(/\[[^\]]+]\([^)]*\)/g, (m) => m.replace(/^\[([^\]]+)].*$/, '$1'))
+    .replace(/^#+\s+/gm, '')
+    .replace(/^>\s?/gm, '')
+    .replace(/[*_`~>-]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 116)
+}
+
+export default defineEventHandler((_event): PostMeta[] => {
+  const dir = join(process.cwd(), 'content', 'posts')
+  const files = readdirSync(dir).filter((f) => f.endsWith('.md'))
+
   const posts: PostMeta[] = []
-  try {
-    const dir = join(process.cwd(), 'content', 'posts')
-    const files = readdirSync(dir).filter(f => f.endsWith('.md'))
-    
-    for (const file of files) {
-      const path = join(dir, file)
-      const content = readFileSync(path, 'utf-8')
-      const frontmatter = parseFrontmatter(content)
-      
-      if (frontmatter.draft === true || frontmatter.hidden === true || frontmatter.published === false) {
-        continue
-      }
-      
-      const slug = file.replace('.md', '')
-      posts.push({
-        path: `/posts/${slug}`,
-        slug,
-        title: frontmatter.title as string || '',
-        description: frontmatter.description as string || undefined,
-        excerpt: undefined,
-        date: frontmatter.date as string || '',
-        tags: (frontmatter.tags as string[]) || [],
-        readingTime: (frontmatter.readingTime as number) || undefined,
-        categories: (frontmatter.categories as string[]) || undefined,
-      })
-    }
-  } catch {
+
+  for (const file of files) {
+    const source = readFileSync(join(dir, file), 'utf-8')
+    const { data, body } = parseFrontmatter(source)
+    const slug = basename(file, '.md')
+
+    // 过滤隐藏 / 草稿
+    if (data.draft === true) continue
+    if (data.hidden === true) continue
+    if (data.published === false) continue
+
+    posts.push({
+      slug,
+      path: `/posts/${slug}`,
+      title: String(data.title ?? slug),
+      date: String(data.date ?? '2020-01-01'),
+      tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],
+      description: String(data.description ?? ''),
+      excerpt: excerptFromBody(body),
+      draft: Boolean(data.draft),
+      hidden: Boolean(data.hidden),
+      published: data.published !== false,
+      readingTime: readingTime(body),
+      series: data.series ? String(data.series) : undefined,
+      seriesOrder: typeof data.seriesOrder === 'number' ? data.seriesOrder : undefined,
+    })
   }
-  
-  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+
+  // 按日期降序
+  posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  return posts
 })

@@ -15,6 +15,7 @@
           </div>
         </div>
       </div>
+
       <aside class="about-snapshot" aria-label="个人站点概览">
         <p class="snapshot-label">PROFILE SNAPSHOT</p>
         <div class="snapshot-grid">
@@ -31,9 +32,10 @@
             <em>最近更新</em>
           </div>
         </div>
-        <p class="snapshot-note">关注 AI 应用开发、Agent 架构、RAG 系统和知识图谱技术。</p>
+        <p class="snapshot-note">关注 AI Infra、后端系统、工程实践和可复用的技术笔记沉淀。</p>
       </aside>
     </section>
+
     <div class="about-layout">
       <div>
         <SiteBlock eyebrow="Focus" title="关注方向" description="把个人介绍拆成更具体的工程兴趣，方便快速判断内容边界。">
@@ -46,16 +48,19 @@
             </article>
           </div>
         </SiteBlock>
-        <SiteBlock eyebrow="Stack" title="技术栈" description="偏工程落地的全栈组合：AI 应用、后端服务、前端框架和基础设施。">
+
+        <SiteBlock eyebrow="Stack" title="技术栈" description="偏工程落地的全栈组合：后端、AI Infra、前端框架和基础设施。">
           <div class="stack-panel">
             <span v-for="tech in appConfig.techStack" :key="tech.name" class="skill-chip">{{ tech.name }}</span>
           </div>
         </SiteBlock>
+
         <SiteBlock eyebrow="Experience" title="经历">
           <div class="timeline">
             <article v-for="exp in appConfig.experience" :key="exp.company" class="timeline-card">
               <div class="timeline-logo">
-                <span>{{ exp.company[0] }}</span>
+                <img v-if="exp.logo" :src="exp.logo" :alt="exp.company" width="34" height="34" />
+                <span v-else>{{ exp.company[0] }}</span>
               </div>
               <div>
                 <time>{{ exp.period }}</time>
@@ -70,12 +75,14 @@
           </div>
         </SiteBlock>
       </div>
+
       <aside>
         <SiteBlock eyebrow="Now" title="当前状态" tone="panel">
           <div class="now-card">
-            <p>持续整理 AI 应用开发、Agent 架构和 RAG 系统相关的学习笔记，也会把项目拆解、源码阅读和技术实践沉淀成可检索的资料库。</p>
+            <p>持续整理后端、AI Infra 和工程实践相关的学习笔记，也会把项目拆解、源码阅读和面试准备沉淀成可检索的资料库。</p>
           </div>
         </SiteBlock>
+
         <SiteBlock eyebrow="Recent" title="近期文章" tone="panel">
           <ArticleStream :posts="recentPosts" />
         </SiteBlock>
@@ -85,18 +92,7 @@
 </template>
 
 <script setup lang="ts">
-interface PostMeta {
-  _path: string
-  path: string
-  slug: string
-  title: string
-  description?: string
-  excerpt?: string
-  date: string
-  tags: string[]
-  readingTime?: number
-  categories?: string[]
-}
+import type { PostMeta } from '~/server/api/posts.get'
 
 const appConfig = useAppConfig()
 
@@ -125,19 +121,19 @@ const focusAreas = [
     desc: 'RAG、上下文工程、记忆系统、推理优化和 Agent 产品化。',
   },
   {
-    key: 'KG',
-    title: 'Knowledge Graph',
-    desc: '知识图谱构建、实体识别、关系抽取与图数据库应用。',
-  },
-  {
-    key: 'RAG',
-    title: 'Retrieval-Augmented Generation',
-    desc: '向量检索、多模态检索、重排序与 RAG 系统优化。',
-  },
-  {
     key: 'SYS',
-    title: 'System Design',
-    desc: '分布式系统、缓存策略、消息队列与高并发架构设计。',
+    title: 'Backend Systems',
+    desc: '高并发、缓存、数据库、消息队列和分布式系统设计。',
+  },
+  {
+    key: 'SRC',
+    title: 'Source Reading',
+    desc: '从源码和项目结构里提炼可迁移的工程经验。',
+  },
+  {
+    key: 'DOC',
+    title: 'Knowledge Base',
+    desc: '把零散学习转成可搜索、可复盘、可长期维护的笔记库。',
   },
 ]
 

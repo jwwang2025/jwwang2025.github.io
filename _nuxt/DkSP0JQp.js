@@ -1,0 +1,1 @@
+import{C as e,P as t,R as n}from"#entry";import{t as r}from"./BDNMzG2s.js";var i={};function a(r,i){return t(),e(`tr`,null,[n(r.$slots,`default`)])}var o=Object.assign(r(i,[[`render`,a]]),{__name:`ProseTr`});export{o as default};

@@ -1,0 +1,25 @@
+{
+  "name": "jwwang-blog",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.17.4",
+    "@nuxt/content": "^3.15.1",
+    "better-sqlite3": "^12.11.1",
+    "katex": "^0.17.0",
+    "markdown-it": "^14.3.0",
+    "nuxt": "^4.0.0",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

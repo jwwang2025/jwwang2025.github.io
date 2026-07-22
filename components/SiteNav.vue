@@ -51,6 +51,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const config = useAppConfig()
+const route = useRoute()
 
 const isScrolled = ref(false)
 const currentTheme = ref('dark')
@@ -58,7 +59,7 @@ const currentTheme = ref('dark')
 const themes = ['light', 'dark', 'cyber']
 
 function isCurrentPath(path: string): boolean {
-  const current = useRoute().path
+  const current = route.path
   if (path === '/') return current === '/'
   return current.startsWith(path)
 }

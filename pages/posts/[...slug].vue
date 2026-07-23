@@ -1,0 +1,366 @@
+<template>
+  <div>
+    <aside v-if="page" class="author-sidebar" aria-label="关于作者">
+      <div
+        class="post-author-card"
+        :style="{ '--reading-progress': readingProgress }"
+      >
+        <p class="post-author-head">
+          <span>About</span>
+          <strong>{{ String(readingProgress).padStart(2, '0') }}%</strong>
+        </p>
+        <NuxtLink to="/about" class="post-author-identity">
+          <span class="post-author-orbit" aria-hidden="true">
+            <img class="post-author-avatar" src="/avatar.jpg" alt="" width="44" height="44" />
+          </span>
+          <span class="post-author-name">
+            <strong>{{ appConfig.authorCN }}</strong>
+            <small>{{ appConfig.authorEN }}</small>
+          </span>
+          <span class="post-author-arrow" aria-hidden="true">↗</span>
+        </NuxtLink>
+        <p class="post-author-role">{{ appConfig.role }}</p>
+        <div class="post-author-focus" aria-label="关注领域">
+          <span>LLM</span>
+          <span>Agent</span>
+          <span>Backend</span>
+        </div>
+        <div
+          class="post-author-progress"
+          role="progressbar"
+          aria-label="文章阅读进度"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          :aria-valuenow="readingProgress"
+        >
+          <div>
+            <span>Reading track</span>
+            <a href="#article-start" aria-label="跳到文章正文">↓</a>
+          </div>
+          <span class="post-author-progress-track" aria-hidden="true">
+            <span :style="{ width: `${readingProgress}%` }" />
+          </span>
+        </div>
+        <div class="post-author-links">
+          <NuxtLink to="/about">
+            查看介绍
+            <span aria-hidden="true">→</span>
+          </NuxtLink>
+          <a
+            :href="appConfig.github"
+            target="_blank"
+            rel="noopener noreferrer"
+            :aria-label="`${appConfig.authorCN} 的 GitHub`"
+          >
+            GitHub
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <aside
+      v-if="toc && toc.links && toc.links.length > 2"
+      class="toc-sidebar"
+      aria-label="目录"
+    >
+      <div class="toc-label">目录</div>
+      <template v-for="link in toc.links" :key="link.id">
+        <a
+          :href="`#${link.id}`"
+          class="toc-link"
+          :class="{ 'toc-link-active': activeId === link.id }"
+          @click.prevent="scrollToHeading(link.id)"
+        >{{ link.text }}</a>
+        <template v-if="link.children">
+          <a
+            v-for="child in link.children"
+            :key="child.id"
+            :href="`#${child.id}`"
+            class="toc-link toc-link-h3"
+            :class="{ 'toc-link-active': activeId === child.id }"
+            @click.prevent="scrollToHeading(child.id)"
+          >{{ child.text }}</a>
+        </template>
+      </template>
+    </aside>
+
+    <div class="page-wrapper-narrow">
+      <NuxtLink to="/posts" class="post-header-back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        所有文章
+      </NuxtLink>
+
+      <template v-if="page">
+        <header class="post-header">
+          <div class="post-header-overline">
+            <span>{{ primaryTopic }}</span>
+            <time :datetime="page.date">{{ formatDate(page.date) }}</time>
+          </div>
+          <h1 class="post-title">{{ page.title }}</h1>
+          <p v-if="page.description" class="post-desc">{{ page.description }}</p>
+          <div class="post-header-footer">
+            <div class="post-meta">
+              <span>{{ postReadingTime }} min read</span>
+              <template v-if="page.series">
+                <span class="post-meta-sep">·</span>
+                <span>{{ page.series }}<template v-if="page.seriesOrder"> · 第 {{ page.seriesOrder }} 篇</template></span>
+              </template>
+              <template v-else-if="page.tags?.length">
+                <span class="post-meta-sep">·</span>
+                <span>{{ page.tags.length }} keywords</span>
+              </template>
+            </div>
+            <a class="post-header-jump" href="#article-start" aria-label="开始阅读" title="开始阅读">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 4v15" />
+                <path d="m6.5 13.5 5.5 5.5 5.5-5.5" />
+              </svg>
+            </a>
+          </div>
+          <div v-if="page.tags?.length" class="post-tags">
+            <NuxtLink
+              v-for="tag in page.tags"
+              :key="tag"
+              :to="`/tags/${tagSlug(tag)}`"
+              class="tag-chip"
+            >{{ tag }}</NuxtLink>
+          </div>
+        </header>
+
+        <article id="article-start" class="prose" ref="articleRef">
+          <ContentRenderer :value="page" />
+        </article>
+
+        <section v-if="seriesPosts.length > 1" class="post-series" aria-labelledby="series-title">
+          <div>
+            <p>Series</p>
+            <h2 id="series-title">{{ page.series }}</h2>
+          </div>
+          <ol>
+            <li v-for="post in seriesPosts" :key="post.path" :class="{ current: post.path === path }">
+              <NuxtLink :to="post.path">
+                <span>{{ String(post.seriesOrder ?? 0).padStart(2, '0') }}</span>
+                {{ post.title }}
+              </NuxtLink>
+            </li>
+          </ol>
+        </section>
+
+        <nav class="post-nav" aria-label="文章导航">
+          <NuxtLink
+            v-if="prevPost"
+            :to="prevPost.path"
+            class="post-nav-item prev"
+          >
+            <span class="post-nav-label">← 上一篇</span>
+            <span class="post-nav-title">{{ prevPost.title }}</span>
+          </NuxtLink>
+          <div v-else />
+          <NuxtLink
+            v-if="nextPost"
+            :to="nextPost.path"
+            class="post-nav-item next"
+          >
+            <span class="post-nav-label">下一篇 →</span>
+            <span class="post-nav-title">{{ nextPost.title }}</span>
+          </NuxtLink>
+          <div v-else />
+        </nav>
+      </template>
+
+      <template v-else>
+        <div style="text-align: center; padding: 4rem 0; color: var(--text-muted)">
+          <p style="font-size: 1.25rem; margin-bottom: 1rem">文章不存在</p>
+          <NuxtLink to="/posts" class="pill" style="display: inline-flex">返回文章列表</NuxtLink>
+        </div>
+      </template>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { formatDate, tagSlug, readingTime } from '~/utils/blog'
+import type { PostMeta } from '~/server/api/posts.get'
+
+const route = useRoute()
+const appConfig = useAppConfig()
+
+const path = computed(() => {
+  const slug = route.params.slug
+  const slugStr = Array.isArray(slug) ? slug.join('/') : slug
+  return `/posts/${slugStr}`
+})
+
+const { data: page } = await useAsyncData(`post-${path.value}`, () =>
+  queryCollection('posts').path(path.value).first()
+)
+
+const { data: navPosts } = await useAsyncData<PostMeta[]>('all-posts-nav', () =>
+  $fetch('/api/posts')
+)
+
+const currentIndex = computed(() =>
+  (navPosts.value ?? []).findIndex(p => p.path === path.value)
+)
+
+const prevPost = computed(() => {
+  const posts = navPosts.value ?? []
+  return currentIndex.value > 0 ? posts[currentIndex.value - 1] : null
+})
+
+const nextPost = computed(() => {
+  const posts = navPosts.value ?? []
+  return currentIndex.value < posts.length - 1 ? posts[currentIndex.value + 1] : null
+})
+
+const seriesPosts = computed(() => {
+  if (!page.value?.series) return []
+  return (navPosts.value ?? [])
+    .filter(post => post.series === page.value?.series)
+    .sort((a, b) => (a.seriesOrder ?? 999) - (b.seriesOrder ?? 999))
+})
+
+const toc = computed(() => page.value?.body?.toc ?? null)
+const primaryTopic = computed(() => page.value?.categories?.[0] ?? '技术随笔')
+
+const postReadingTime = computed(() => {
+  const meta = (navPosts.value ?? []).find(p => p.path === path.value)
+  if (meta?.readingTime) return meta.readingTime
+  if (page.value?.readingTime) return page.value.readingTime
+  if (!page.value) return 1
+  return readingTime(JSON.stringify(page.value.body ?? ''))
+})
+
+const activeId = ref('')
+const articleRef = ref<HTMLElement | null>(null)
+const readingProgress = ref(0)
+let progressFrame = 0
+
+function updateReadingProgress() {
+  const article = articleRef.value
+  if (!article) return
+
+  const articleTop = window.scrollY + article.getBoundingClientRect().top
+  const start = articleTop - window.innerHeight * 0.22
+  const end = articleTop + article.offsetHeight - window.innerHeight * 0.72
+  const progress = ((window.scrollY - start) / Math.max(1, end - start)) * 100
+  readingProgress.value = Math.min(100, Math.max(0, Math.round(progress)))
+}
+
+function scheduleReadingProgress() {
+  if (progressFrame) return
+  progressFrame = window.requestAnimationFrame(() => {
+    updateReadingProgress()
+    progressFrame = 0
+  })
+}
+
+function scrollToHeading(id: string) {
+  const el = document.getElementById(id)
+  if (el) {
+    const offset = 72
+    const top = el.getBoundingClientRect().top + window.scrollY - offset
+    window.scrollTo({ top, behavior: 'smooth' })
+  }
+}
+
+onMounted(() => {
+  scheduleReadingProgress()
+  window.addEventListener('scroll', scheduleReadingProgress, { passive: true })
+  window.addEventListener('resize', scheduleReadingProgress)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', scheduleReadingProgress)
+  window.removeEventListener('resize', scheduleReadingProgress)
+  if (progressFrame) window.cancelAnimationFrame(progressFrame)
+})
+
+onMounted(() => {
+  const addCopyButtons = () => {
+    const pres = document.querySelectorAll('.prose pre')
+    pres.forEach(pre => {
+      if (pre.querySelector('.code-copy-btn')) return
+      const wrapper = document.createElement('div')
+      wrapper.className = 'code-block-wrapper'
+      wrapper.style.position = 'relative'
+      pre.parentNode?.insertBefore(wrapper, pre)
+      wrapper.appendChild(pre)
+
+      const btn = document.createElement('button')
+      btn.className = 'code-copy-btn'
+      btn.textContent = 'copy'
+      btn.addEventListener('click', async () => {
+        const code = pre.querySelector('code')?.textContent ?? ''
+        try {
+          await navigator.clipboard.writeText(code)
+          btn.textContent = 'copied!'
+          btn.classList.add('copied')
+          setTimeout(() => {
+            btn.textContent = 'copy'
+            btn.classList.remove('copied')
+          }, 2000)
+        } catch {
+          btn.textContent = 'error'
+          setTimeout(() => { btn.textContent = 'copy' }, 2000)
+        }
+      })
+      wrapper.appendChild(btn)
+    })
+  }
+
+  addCopyButtons()
+
+  const headings = document.querySelectorAll('.prose h2, .prose h3')
+  if (headings.length === 0) return
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          activeId.value = entry.target.id
+        }
+      }
+    },
+    { rootMargin: '-72px 0px -60% 0px', threshold: 0 }
+  )
+
+  headings.forEach(h => observer.observe(h))
+  onUnmounted(() => observer.disconnect())
+})
+
+useHead(() => ({
+  title: page.value?.title ?? '文章',
+  meta: [
+    { name: 'description', content: page.value?.description ?? appConfig.description },
+    { property: 'og:title', content: page.value?.title ?? '' },
+    { property: 'og:description', content: page.value?.description ?? appConfig.description },
+    { property: 'og:type', content: 'article' },
+    { property: 'article:published_time', content: page.value?.date ?? '' },
+    { property: 'article:author', content: appConfig.authorCN },
+  ],
+  script: page.value
+    ? [
+        {
+          type: 'application/ld+json',
+          innerHTML: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: page.value.title,
+            description: page.value.description ?? '',
+            datePublished: page.value.date,
+            author: {
+              '@type': 'Person',
+              name: appConfig.authorCN,
+              url: appConfig.url,
+            },
+            url: `${appConfig.url}${page.value.path}`,
+          }),
+        },
+      ]
+    : [],
+}))
+</script>

@@ -1,0 +1,1 @@
+import{G as e,O as t,V as n,n as r}from"#entry";var i={};function a(r,i){return n(),t(`tbody`,null,[e(r.$slots,`default`)])}var o=Object.assign(r(i,[[`render`,a]]),{__name:`ProseTbody`});export{o as default};

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120" width="400" height="120">
+  <defs>
+    <style type="text/css">
+      .charcoal { fill: #1E293B; }
+      .accent { fill: #7DD3FC; }
+      .charcoal-stroke { stroke: #1E293B; stroke-width: 4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+      .accent-stroke { stroke: #7DD3FC; stroke-width: 4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <!-- 左侧图标 - 圆角方形 -->
+  <g transform="translate(10, 10)">
+    <rect x="0" y="0" width="100" height="100" rx="24" ry="24" class="charcoal-stroke" style="stroke-width: 3.5;"/>
+    
+    <!-- S形标识 -->
+    <g transform="translate(50, 50)">
+      <path d="M -18 -18 
+               C -18 -34 6 -34 14 -24
+               C 18 -20 18 -15 14 -11
+               C 11 -8 7 -7 4 -6" 
+            class="charcoal-stroke" style="stroke-width: 4;"/>
+      <path d="M -4 6
+               C -7 7 -11 8 -14 11
+               C -18 15 -18 20 -14 24
+               C -6 34 18 34 18 18" 
+            class="accent-stroke" style="stroke-width: 4;"/>
+      <circle cx="0" cy="0" r="3" class="accent"/>
+    </g>
+  </g>
+
+  <!-- 右侧文字 -->
+  <g transform="translate(130, 0)">
+    <!-- 主标题 -->
+    <text x="0" y="58" text-anchor="start" 
+          font-family="Inter, 'SF Pro Display', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" 
+          font-weight="700" 
+          font-size="42" 
+          letter-spacing="-0.5" 
+          class="charcoal">Startint</text>
+    
+    <!-- 副标题 -->
+    <text x="0" y="82" text-anchor="start" 
+          font-family="Inter, 'SF Pro Display', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif" 
+          font-weight="400" 
+          font-size="12" 
+          letter-spacing="3" 
+          style="fill: #1E293B; opacity: 0.6;">
+      PERSONAL BLOG
+    </text>
+
+    <!-- 装饰线 -->
+    <path d="M 0 92 L 80 92" class="accent-stroke" style="stroke-width: 2;"/>
+    <path d="M 88 92 L 200 92" class="charcoal-stroke" style="stroke-width: 2; opacity: 0.4;"/>
+  </g>
+
+</svg>

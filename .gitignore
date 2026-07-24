@@ -40,6 +40,7 @@ Thumbs.db
 .tmp
 
 # Database
+.data/*
 *.sqlite
 *.sqlite3
 
@@ -48,3 +49,5 @@ $RECYCLE.BIN/
 
 
 .trae/
+
+.liangqianxing.github.io/

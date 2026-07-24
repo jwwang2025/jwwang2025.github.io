@@ -2,7 +2,7 @@
   <main class="page-frame">
     <section class="about-hero">
       <div class="about-profile">
-        <img src="/avatar.jpg" :alt="appConfig.authorCN" width="148" height="148" />
+        <img src="/avatar.png" :alt="appConfig.authorCN" width="148" height="148" />
         <div class="about-identity">
           <p class="eyebrow">{{ appConfig.role }}</p>
           <h1>{{ appConfig.authorCN }}</h1>

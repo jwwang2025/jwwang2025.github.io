@@ -1,6 +1,6 @@
 export default defineAppConfig({
-  authorCN: '王敬文',
-  authorEN: 'Wang Jingwen',
+  authorCN: 'Startint',
+  authorEN: 'Startint',
   title: 'jwwang.log',
   role: 'AI 应用开发工程师',
   status: '北京理工大学在读硕士',

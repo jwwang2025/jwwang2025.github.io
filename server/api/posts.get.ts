@@ -11,6 +11,7 @@ import { join, basename } from 'node:path'
 export interface PostMeta {
   slug: string
   path: string
+  contentPath: string
   title: string
   date: string
   tags: string[]
@@ -120,9 +121,13 @@ export default defineEventHandler((_event): PostMeta[] => {
     if (data.hidden === true) continue
     if (data.published === false) continue
 
+    const contentBase = join(process.cwd(), 'content', 'posts')
+    const contentPath = filePath.slice(contentBase.length + 1).replace(/\.md$/, '')
+
     posts.push({
       slug,
       path: `/posts/${slug}`,
+      contentPath,
       title: String(data.title ?? slug),
       date: String(data.date ?? '2020-01-01'),
       tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],

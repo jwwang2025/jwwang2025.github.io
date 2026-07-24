@@ -39,6 +39,9 @@ jobs:
         env:
           NUXT_PUBLIC_SITE_URL: ${{ vars.SITE_URL || 'https://jwwang2025.github.io' }}
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

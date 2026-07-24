@@ -60,12 +60,12 @@
     </aside>
 
     <aside
-      v-if="toc && toc.links && toc.links.length > 2"
+      v-if="tocItems.length > 2"
       class="toc-sidebar"
       aria-label="目录"
     >
       <div class="toc-label">目录</div>
-      <template v-for="link in toc.links" :key="link.id">
+      <template v-for="link in tocItems" :key="link.id">
         <a
           :href="`#${link.id}`"
           class="toc-link"
@@ -130,9 +130,7 @@
           </div>
         </header>
 
-        <article id="article-start" class="prose" ref="articleRef">
-          <ContentRenderer :value="page" />
-        </article>
+        <article id="article-start" class="prose" ref="articleRef" v-html="renderedContent" />
 
         <section v-if="seriesPosts.length > 1" class="post-series" aria-labelledby="series-title">
           <div>
@@ -182,20 +180,42 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import { formatDate, tagSlug, readingTime } from '~/utils/blog'
 import type { PostMeta } from '~/server/api/posts.get'
+
+interface TocLink {
+  id: string
+  text: string
+  children?: TocLink[]
+}
+
+interface PageData {
+  slug: string
+  path: string
+  title: string
+  date: string
+  tags: string[]
+  description: string
+  categories?: string[]
+  series?: string
+  seriesOrder?: number
+  readingTime?: number
+  body: string
+}
 
 const route = useRoute()
 const appConfig = useAppConfig()
 
-const path = computed(() => {
-  const slug = route.params.slug
-  const slugStr = Array.isArray(slug) ? slug.join('/') : slug
-  return `/posts/${slugStr}`
+const slug = computed(() => {
+  const s = route.params.slug
+  return Array.isArray(s) ? s.join('/') : s
 })
 
-const { data: page } = await useAsyncData(`post-${path.value}`, () =>
-  queryCollection('posts').path(path.value).first()
+const path = computed(() => `/posts/${slug.value}`)
+
+const { data: page } = await useAsyncData<PageData>(`post-${slug.value}`, () =>
+  $fetch(`/api/post/${slug.value}`).catch(() => null)
 )
 
 const { data: navPosts } = await useAsyncData<PostMeta[]>('all-posts-nav', () =>
@@ -223,7 +243,45 @@ const seriesPosts = computed(() => {
     .sort((a, b) => (a.seriesOrder ?? 999) - (b.seriesOrder ?? 999))
 })
 
-const toc = computed(() => page.value?.body?.toc ?? null)
+const tocItems = computed<TocLink[]>(() => {
+  const body = page.value?.body ?? ''
+  const headings: { level: number; id: string; text: string }[] = []
+  const h2Regex = /^##\s+(.+)$/gm
+  const h3Regex = /^###\s+(.+)$/gm
+  let match
+
+  while ((match = h2Regex.exec(body)) !== null) {
+    const text = match[1].trim()
+    const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+    headings.push({ level: 2, id, text })
+  }
+
+  while ((match = h3Regex.exec(body)) !== null) {
+    const text = match[1].trim()
+    const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+    headings.push({ level: 3, id, text })
+  }
+
+  headings.sort((a, b) => {
+    if (a.level !== b.level) return a.level - b.level
+    return body.indexOf(a.text) - body.indexOf(b.text)
+  })
+
+  const toc: TocLink[] = []
+  let currentH2: TocLink | null = null
+
+  for (const heading of headings) {
+    if (heading.level === 2) {
+      currentH2 = { id: heading.id, text: heading.text, children: [] }
+      toc.push(currentH2)
+    } else if (heading.level === 3 && currentH2) {
+      currentH2.children!.push({ id: heading.id, text: heading.text })
+    }
+  }
+
+  return toc
+})
+
 const primaryTopic = computed(() => page.value?.categories?.[0] ?? '技术随笔')
 
 const postReadingTime = computed(() => {
@@ -231,7 +289,37 @@ const postReadingTime = computed(() => {
   if (meta?.readingTime) return meta.readingTime
   if (page.value?.readingTime) return page.value.readingTime
   if (!page.value) return 1
-  return readingTime(JSON.stringify(page.value.body ?? ''))
+  return readingTime(page.value.body)
+})
+
+const renderedContent = computed(() => {
+  if (!page.value?.body) return ''
+  let content = page.value.body
+    .replace(/^### (.+)$/gm, (_, text) => {
+      const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+      return `<h3 id="${id}">${text}</h3>`
+    })
+    .replace(/^## (.+)$/gm, (_, text) => {
+      const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
+      return `<h2 id="${id}">${text}</h2>`
+    })
+    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+    .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
+      const language = lang || 'text'
+      return `<pre><code class="language-${language}">${code.trim()}</code></pre>`
+    })
+    .replace(/\|(.+)\|/g, (_, content) => {
+      const cells = content.split('|').map(c => c.trim())
+      return `<tr>${cells.map(c => `<td>${c}</td>`).join('')}</tr>`
+    })
+
+  return `<p>${content}</p>`
 })
 
 const activeId = ref('')

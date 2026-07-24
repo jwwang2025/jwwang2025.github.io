@@ -90,16 +90,30 @@ function excerptFromBody(body: string): string {
     .slice(0, 116)
 }
 
+function collectMarkdownFiles(dir: string): string[] {
+  const files: string[] = []
+  const entries = readdirSync(dir, { withFileTypes: true })
+  for (const entry of entries) {
+    const fullPath = join(dir, entry.name)
+    if (entry.isDirectory()) {
+      files.push(...collectMarkdownFiles(fullPath))
+    } else if (entry.isFile() && entry.name.endsWith('.md')) {
+      files.push(fullPath)
+    }
+  }
+  return files
+}
+
 export default defineEventHandler((_event): PostMeta[] => {
   const dir = join(process.cwd(), 'content', 'posts')
-  const files = readdirSync(dir).filter((f) => f.endsWith('.md'))
+  const files = collectMarkdownFiles(dir)
 
   const posts: PostMeta[] = []
 
-  for (const file of files) {
-    const source = readFileSync(join(dir, file), 'utf-8')
+  for (const filePath of files) {
+    const source = readFileSync(filePath, 'utf-8')
     const { data, body } = parseFrontmatter(source)
-    const slug = basename(file, '.md')
+    const slug = basename(filePath, '.md')
 
     // 过滤隐藏 / 草稿
     if (data.draft === true) continue

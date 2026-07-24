@@ -122,7 +122,7 @@ export default defineEventHandler((_event): PostMeta[] => {
     if (data.published === false) continue
 
     const contentBase = join(process.cwd(), 'content', 'posts')
-    const contentPath = filePath.slice(contentBase.length + 1).replace(/\.md$/, '')
+    const contentPath = filePath.slice(contentBase.length + 1).replace(/\.md$/, '').replace(/\\/g, '/')
 
     posts.push({
       slug,

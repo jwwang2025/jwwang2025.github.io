@@ -27,7 +27,6 @@ type ThemeTransitionDocument = Document & {
   startViewTransition?: (callback: () => void) => ThemeViewTransition
 }
 
-// Theme state
 const isDark = ref(true)
 const isThemeReady = ref(false)
 const themeMode = ref<ThemeMode>('dark')
@@ -56,13 +55,11 @@ function applyTheme(mode: ThemeMode, persist = true) {
   }
 }
 
-// Initialize theme from localStorage on client
 onMounted(() => {
   const stored = normalizeTheme(localStorage.getItem('theme'))
   applyTheme(stored, false)
   isThemeReady.value = true
 
-  // Reading progress bar
   const bar = document.getElementById('reading-bar')
   if (bar) {
     let ticking = false
@@ -85,7 +82,6 @@ onMounted(() => {
   }
 })
 
-// Apply a selected theme with a soft bloom from the interaction point.
 function setTheme(nextTheme: ThemeMode, event?: MouseEvent) {
   const h = document.documentElement
   if (nextTheme === themeMode.value || h.classList.contains('transitioning')) return
@@ -157,7 +153,6 @@ function toggleTheme(event?: MouseEvent) {
   setTheme(nextTheme, event)
 }
 
-// Keyboard shortcut: T to toggle theme
 onMounted(() => {
   const handler = (e: KeyboardEvent) => {
     const tag = (e.target as HTMLElement)?.tagName
@@ -170,7 +165,6 @@ onMounted(() => {
   onUnmounted(() => window.removeEventListener('keydown', handler))
 })
 
-// Provide theme state to children
 provide('isDark', isDark)
 provide('isThemeReady', isThemeReady)
 provide('themeMode', themeMode)

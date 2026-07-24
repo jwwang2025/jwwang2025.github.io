@@ -1,4 +1,4 @@
-{
+﻿{
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
@@ -12,10 +12,11 @@
     "skipLibCheck": true,
     "noEmit": true,
     "paths": {
-      "~/*": ["./*"]
+      "~/*": ["./*"],
+      "@/*": ["./*"]
     },
     "types": ["nuxt", "@types/node"]
   },
-  "include": ["**/*.ts", "**/*.vue"],
-  "exclude": ["node_modules", ".nuxt", "dist"]
+  "include": ["**/*.ts", "**/*.vue", ".nuxt/**/*.d.ts"],
+  "exclude": ["node_modules", ".output", "dist"]
 }

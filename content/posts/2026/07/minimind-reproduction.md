@@ -12,7 +12,7 @@ tags:
   - DPO
   - 模型训练
 readingTime: 15
-draft: true
+draft: false
 ---
 
 > **声明**：本文为 MiniMind 项目的学习框架，文中涉及的文件路径、命令参数、代码片段均为基于公开信息的示意性内容。实际复现时请以 [MiniMind GitHub 仓库](https://github.com/jingyaogong/minimind) 的最新代码为准。

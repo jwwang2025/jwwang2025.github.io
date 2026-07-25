@@ -576,8 +576,8 @@ html.theme-switching .theme-transition-sheen {
 
 .theme-toggle-indicator {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 4px;
+  left: 4px;
   width: 30px;
   height: 30px;
   border-radius: 999px;

@@ -9,7 +9,39 @@ const posts = await getAllPosts()
 const tags = await getAllTags()
 const groupedPosts = await getPostsGroupedByYear()
 
-const postsJson = JSON.stringify(posts)
+const topicKeywords = {
+  'interview': ['面试', '求职', 'career', 'interview'],
+  'llm-agent': ['agent', 'llm', '智能体', 'langchain', 'langgraph'],
+  'model-principle': ['transformer', 'moe', '模型原理', 'deep learning', '架构'],
+  'training-inference': ['训练', '推理', 'inference', 'optimization', 'dpo'],
+  'multimodal': ['多模态', 'vision', 'audio', 'multimodal'],
+  'backend': ['后端', '系统设计', 'backend', 'cloud', 'microservice'],
+  'quantization': ['量化', '低延迟', 'quantization', 'performance'],
+  'algorithm': ['算法', '竞赛', 'algorithm', 'leetcode'],
+  'essay': ['随笔', '生活', '杂谈', 'essay'],
+}
+
+function countPostsByTopic(topicId) {
+  if (topicId === 'all') return posts.length
+  const keywords = topicKeywords[topicId] || []
+  return posts.filter(post => {
+    const allText = [post.title, post.description, ...post.tags, ...post.categories]
+      .join(' ')
+      .toLowerCase()
+    return keywords.some(k => allText.includes(k.toLowerCase()))
+  }).length
+}
+
+function filterPostsByTopic(topicId) {
+  if (topicId === 'all') return posts
+  const keywords = topicKeywords[topicId] || []
+  return posts.filter(post => {
+    const allText = [post.title, post.description, ...post.tags, ...post.categories]
+      .join(' ')
+      .toLowerCase()
+    return keywords.some(k => allText.includes(k.toLowerCase()))
+  })
+}
 ---
 
 <BaseLayout title="文章库" description="浏览所有文章" pageClass="posts-page">
@@ -39,7 +71,7 @@ const postsJson = JSON.stringify(posts)
               <strong>{topic.label}</strong>
               <small>{topic.desc}</small>
             </span>
-            <span class="archive-topic-count">0</span>
+            <span class="archive-topic-count">{countPostsByTopic(topic.id)}</span>
           </button>
         ))}
       </div>
@@ -95,7 +127,7 @@ const postsJson = JSON.stringify(posts)
     </div>
   </div>
 
-  <script define:vars={{ postsData: posts }}>
+  <script define:vars={{ postsData: posts, topicKeywordsData: topicKeywords }}>
     const topicButtons = document.querySelectorAll('.archive-topic')
     const resultsTitle = document.getElementById('results-title')
     const resultsCount = document.getElementById('results-count')
@@ -140,6 +172,17 @@ const postsJson = JSON.stringify(posts)
       `).join('')
     }
 
+    function filterByTopic(topicId) {
+      if (topicId === 'all') return postsData
+      const keywords = topicKeywordsData[topicId] || []
+      return postsData.filter(post => {
+        const allText = [post.title, post.description, ...post.tags, ...(post.categories || [])]
+          .join(' ')
+          .toLowerCase()
+        return keywords.some(k => allText.includes(k.toLowerCase()))
+      })
+    }
+
     topicButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         topicButtons.forEach(b => b.classList.remove('active'))
@@ -150,13 +193,7 @@ const postsJson = JSON.stringify(posts)
         
         resultsTitle.textContent = topicId === 'all' ? '全部文章' : topicLabel
         
-        let filtered = postsData
-        if (topicId !== 'all') {
-          filtered = filtered.filter(p => p.tags.some(t => 
-            t.toLowerCase().includes(topicLabel.toLowerCase()) ||
-            t.toLowerCase().includes(topicId.toLowerCase())
-          ))
-        }
+        const filtered = filterByTopic(topicId)
         
         resultsCount.textContent = `共 ${filtered.length} 篇`
         renderArticles(filtered)

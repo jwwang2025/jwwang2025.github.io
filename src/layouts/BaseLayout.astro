@@ -12,6 +12,7 @@ export interface Props {
 }
 
 const { title = siteConfig.title, description = siteConfig.description, pageClass = '' } = Astro.props
+const currentPath = Astro.url.pathname
 ---
 
 <!DOCTYPE html>
@@ -33,12 +34,15 @@ const { title = siteConfig.title, description = siteConfig.description, pageClas
     document.documentElement.classList.add(preferred)
     document.documentElement.style.setProperty('--theme-x', 'calc(100vw - 74px)')
     document.documentElement.style.setProperty('--theme-y', '42px')
+    const themes = ['light', 'dark', 'cyber']
+    const themeIndex = themes.indexOf(preferred)
+    document.documentElement.style.setProperty('--theme-index', themeIndex)
   </script>
 </head>
 <body>
   <div id="app-root" class={pageClass}>
     <SiteEffects />
-    <AppNav />
+    <AppNav currentPath={currentPath} />
     <main>
       <slot />
     </main>

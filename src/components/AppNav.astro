@@ -26,14 +26,19 @@ const { currentPath = '/' } = Astro.props
     </a>
 
     <div class="nav-center">
-      {siteConfig.navLinks.map((link) => (
-        <a
-          href={link.href}
-          class={`nav-link ${currentPath === link.href ? 'nav-link-active' : ''}`}
-        >
-          {link.label}
-        </a>
-      ))}
+      {siteConfig.navLinks.map((link) => {
+        const isActive = link.href === '/' 
+          ? currentPath === '/' 
+          : currentPath.startsWith(link.href)
+        return (
+          <a
+            href={link.href}
+            class={`nav-link ${isActive ? 'nav-link-active' : ''}`}
+          >
+            {link.label}
+          </a>
+        )
+      })}
     </div>
 
     <div class="nav-actions">

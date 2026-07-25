@@ -78,7 +78,7 @@ const toc = generateToc(htmlContent)
     </header>
 
     <article class="prose">
-      <div set:html={htmlContent} />
+      <div set:html={htmlContent.html} />
     </article>
 
     {seriesPosts.length > 0 && (

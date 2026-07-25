@@ -1180,6 +1180,12 @@ html.theme-switching .theme-transition-sheen {
   gap: 18px;
 }
 
+.article-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
 .article-card {
   min-height: 260px;
   display: flex;

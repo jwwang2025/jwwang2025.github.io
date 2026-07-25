@@ -10,18 +10,18 @@ export interface Props {
 const { post, large = false } = Astro.props
 ---
 
-<article class={`article-card ${large ? 'article-card-large' : ''}`}>
-  <div class="article-meta">
-    <span>{formatDate(post.date)}</span>
-    <span>{post.readingTime || 5} min</span>
-  </div>
-  <h3 class="article-title">
-    <a href={`/posts/${post.slug}`}>{post.title}</a>
-  </h3>
-  {post.description && <p class="article-desc">{post.description}</p>}
-  <div class="article-foot">
-    {post.tags.slice(0, 3).map((tag) => (
-      <span class="mini-tag">#{tag}</span>
-    ))}
-  </div>
-</article>
+<a href={`/posts/${post.slug}`} class="article-card-link">
+  <article class={`article-card ${large ? 'article-card-large' : ''}`}>
+    <div class="article-meta">
+      <span>{formatDate(post.date)}</span>
+      <span>{post.readingTime || 5} min</span>
+    </div>
+    <h3 class="article-title">{post.title}</h3>
+    {post.description && <p class="article-desc">{post.description}</p>}
+    <div class="article-foot">
+      {post.tags.slice(0, 3).map((tag) => (
+        <span class="mini-tag">#{tag}</span>
+      ))}
+    </div>
+  </article>
+</a>

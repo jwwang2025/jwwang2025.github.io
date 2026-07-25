@@ -30,7 +30,7 @@ const allPosts = await getAllPosts()
 const { prev, next } = getPrevNextPosts(allPosts, slug)
 const seriesPosts = post.series ? await getPostsBySeries(post.series) : []
 
-const toc = generateToc(htmlContent)
+const toc = generateToc(htmlContent.html)
 ---
 
 <BaseLayout title={post.title} description={post.description} pageClass="post-page">

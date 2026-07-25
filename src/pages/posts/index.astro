@@ -8,6 +8,8 @@ import { getAllPosts, getAllTags, getPostsGroupedByYear } from '@/utils/blog'
 const posts = await getAllPosts()
 const tags = await getAllTags()
 const groupedPosts = await getPostsGroupedByYear()
+
+const postsJson = JSON.stringify(posts)
 ---
 
 <BaseLayout title="文章库" description="浏览所有文章" pageClass="posts-page">
@@ -27,7 +29,11 @@ const groupedPosts = await getPostsGroupedByYear()
       </div>
       <div class="topic-directory">
         {siteConfig.topicDirectory.map((topic) => (
-          <button class={`archive-topic ${topic.id === 'all' ? 'active' : ''}`}>
+          <button 
+            class={`archive-topic ${topic.id === 'all' ? 'active' : ''}`}
+            data-topic-id={topic.id}
+            data-topic-label={topic.label}
+          >
             <span class="archive-topic-index">{String(siteConfig.topicDirectory.indexOf(topic) + 1).padStart(2, '0')}</span>
             <span class="archive-topic-copy">
               <strong>{topic.label}</strong>
@@ -48,19 +54,19 @@ const groupedPosts = await getPostsGroupedByYear()
               <path d="M21 21l-4.35-4.35"/>
             </svg>
           </span>
-          <input type="text" placeholder="搜索文章标题或标签..." />
+          <input type="text" placeholder="搜索文章标题或标签..." id="search-input" />
         </div>
       </div>
 
       <div class="archive-results-head">
         <div>
-          <h2>全部文章</h2>
-          <p class="archive-count">共 {posts.length} 篇</p>
+          <h2 id="results-title">全部文章</h2>
+          <p class="archive-count" id="results-count">共 {posts.length} 篇</p>
         </div>
       </div>
 
       <div class="filter-row">
-        <span class="topic-button">
+        <span class="topic-button" id="all-tags-btn">
           全部标签
         </span>
         {tags.slice(0, 6).map((tag) => (
@@ -71,19 +77,110 @@ const groupedPosts = await getPostsGroupedByYear()
         ))}
       </div>
 
-      {groupedPosts.map((group) => (
-        <div class="year-section">
-          <h2>
-            {group.year}
-            <span>{group.posts.length} 篇</span>
-          </h2>
-          <div class="article-stream">
-            {group.posts.map((post) => (
-              <ArticleLine post={post} />
-            ))}
+      <div id="articles-container">
+        {groupedPosts.map((group) => (
+          <div class="year-section">
+            <h2>
+              {group.year}
+              <span>{group.posts.length} 篇</span>
+            </h2>
+            <div class="article-stream">
+              {group.posts.map((post) => (
+                <ArticleLine post={post} />
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   </div>
+
+  <script define:vars={{ postsData: posts }}>
+    const topicButtons = document.querySelectorAll('.archive-topic')
+    const resultsTitle = document.getElementById('results-title')
+    const resultsCount = document.getElementById('results-count')
+    const articlesContainer = document.getElementById('articles-container')
+    const searchInput = document.getElementById('search-input')
+
+    function groupPostsByYear(filteredPosts) {
+      const yearMap = new Map()
+      filteredPosts.forEach(post => {
+        const year = post.date.substring(0, 4)
+        if (!yearMap.has(year)) {
+          yearMap.set(year, [])
+        }
+        yearMap.get(year).push(post)
+      })
+      return Array.from(yearMap.entries())
+        .map(([year, posts]) => ({ year, posts }))
+        .sort((a, b) => parseInt(b.year) - parseInt(a.year))
+    }
+
+    function renderArticles(filteredPosts) {
+      const grouped = groupPostsByYear(filteredPosts)
+      articlesContainer.innerHTML = grouped.map(group => `
+        <div class="year-section">
+          <h2>
+            ${group.year}
+            <span>${group.posts.length} 篇</span>
+          </h2>
+          <div class="article-stream">
+            ${group.posts.map(post => `
+              <a href="/posts/${post.slug}" class="article-line">
+                <span class="article-line-date">${post.date}</span>
+                <span class="article-line-copy">
+                  <span class="article-line-title">${post.title}</span>
+                  ${post.description ? `<span class="article-line-desc">${post.description}</span>` : ''}
+                </span>
+                <span class="article-line-tag">${post.tags[0] || ''}</span>
+              </a>
+            `).join('')}
+          </div>
+        </div>
+      `).join('')
+    }
+
+    topicButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        topicButtons.forEach(b => b.classList.remove('active'))
+        btn.classList.add('active')
+        
+        const topicId = btn.dataset.topicId
+        const topicLabel = btn.dataset.topicLabel
+        
+        resultsTitle.textContent = topicId === 'all' ? '全部文章' : topicLabel
+        
+        let filtered = postsData
+        if (topicId !== 'all') {
+          filtered = filtered.filter(p => p.tags.some(t => 
+            t.toLowerCase().includes(topicLabel.toLowerCase()) ||
+            t.toLowerCase().includes(topicId.toLowerCase())
+          ))
+        }
+        
+        resultsCount.textContent = `共 ${filtered.length} 篇`
+        renderArticles(filtered)
+      })
+    })
+
+    searchInput?.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase()
+      if (!query) {
+        resultsTitle.textContent = '全部文章'
+        resultsCount.textContent = `共 ${postsData.length} 篇`
+        renderArticles(postsData)
+        return
+      }
+      
+      const filtered = postsData.filter(p => 
+        p.title.toLowerCase().includes(query) ||
+        p.description?.toLowerCase().includes(query) ||
+        p.tags.some(t => t.toLowerCase().includes(query))
+      )
+      
+      resultsTitle.textContent = `搜索 "${query}"`
+      resultsCount.textContent = `共 ${filtered.length} 篇`
+      renderArticles(filtered)
+    })
+  </script>
 </BaseLayout>

@@ -1,14 +1,14 @@
 # jwwang.log
 
-王敬文的个人技术博客，记录 AI 应用开发、Agent 架构、RAG 系统和知识图谱的技术笔记。
+Startint 的个人技术博客，记录 AI 应用开发、Agent 架构、RAG 系统和知识图谱的技术笔记。
 
-基于 Nuxt 4 与 Nuxt Content 3 构建，静态生成后部署到 GitHub Pages。
+基于 Astro 4 与 Content Collections 构建，静态生成后部署到 GitHub Pages。
 
 [访问博客](https://jwwang2025.github.io) · [文章库](https://jwwang2025.github.io/posts) · [主题索引](https://jwwang2025.github.io/tags) · [GitHub](https://github.com/jwwang2025)
 
 ## 关于博主
 
-王敬文 (Wang Jingwen)，AI 应用开发工程师，北京理工大学在读硕士。
+Startint (Wang Jingwen)，AI 应用开发工程师，北京理工大学在读硕士。
 
 热爱 AI 技术，专注于 Agent、RAG 和知识图谱方向。具备扎实的数理基础和编程能力，善于独立解决问题并推动项目落地。
 
@@ -30,41 +30,44 @@
 
 ## 技术栈
 
-- Nuxt 4、Vue 3、TypeScript
-- Nuxt Content 3、Markdown
+- Astro 4、TypeScript
+- Astro Content Collections、Markdown/MDX
 - Tailwind CSS 4
-- Nitro 静态生成、GitHub Pages
+- KaTeX 数学公式渲染、Shiki 代码高亮
+- GitHub Actions 自动部署
 
 ## 项目结构
 
 ```
 .
-├── assets/css/main.css       # 全站主题、排版和响应式样式
-├── components/               # 导航、文章卡片、知识地图等组件
-├── content/posts/            # Markdown 文章
-├── content.config.ts         # Nuxt Content collection schema
-├── pages/                    # 首页、文章、标签、友链和关于页面
-├── server/api/posts.get.ts   # 静态文章元数据接口
-├── server/api/posts/[slug].get.ts  # 文章详情接口
-├── utils/blog.ts             # 日期、阅读时长和标签工具
-├── app.config.ts             # 作者、导航和站点信息
-└── nuxt.config.ts            # 构建、Markdown 与预渲染配置
+├── src/
+│   ├── components/           # 导航、文章卡片、知识地图等组件
+│   ├── layouts/             # 全局布局组件
+│   ├── pages/               # 首页、文章、标签、友链和关于页面
+│   ├── content/posts/       # Markdown 文章（按年份/月份组织）
+│   ├── content/config.ts    # Content Collections schema
+│   ├── styles/main.css      # 全站主题、排版和响应式样式
+│   ├── utils/blog.ts        # 文章列表、标签、目录等工具函数
+│   └── config.ts            # 作者、导航和站点信息
+├── public/                  # 静态资源（logo、avatar）
+├── astro.config.mjs         # Astro 配置
+└── package.json             # 依赖和脚本
 ```
 
 ## 本地开发
 
-要求 Node.js 22。
+要求 Node.js 22+。
 
 ```bash
-npm ci
-npm run dev       # 默认 http://localhost:3000
-npm run build     # 静态产物输出到 .output/public
+npm install
+npm run dev       # 默认 http://localhost:4321
+npm run build     # 静态产物输出到 dist/
 npm run preview   # 预览生产构建
 ```
 
 ## 写新文章
 
-在 `content/posts/` 下新建 Markdown 文件。文件名即 URL slug，例如 `agent-memory.md` 对应 `/posts/agent-memory`。
+在 `src/content/posts/` 下新建 Markdown 文件，建议按年份/月份组织目录，例如 `src/content/posts/2026/07/agent-memory.md` 对应 `/posts/2026/07/agent-memory`。
 
 ```yaml
 ---
@@ -88,10 +91,13 @@ readingTime: 10
 
 ## 部署
 
-构建产物位于 `.output/public` 目录，可部署到 GitHub Pages：
+构建产物位于 `dist/` 目录，通过 GitHub Actions 自动部署到 GitHub Pages。
+
+手动部署：
 
 ```bash
-npx gh-pages --dotfiles -d .output/public
+npm run build
+npx gh-pages --dotfiles -d dist
 ```
 
 ## License

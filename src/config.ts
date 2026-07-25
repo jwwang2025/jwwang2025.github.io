@@ -61,7 +61,7 @@ export const siteConfig = {
     { id: "backend", label: "后端与系统", desc: "后端开发与系统工程" },
     { id: "quantization", label: "量化与低延迟", desc: "模型量化与性能优化" },
     { id: "algorithm", label: "算法与竞赛", desc: "算法题解与竞赛经验" },
-    { id: "essay", label: "随笔与其他", desc: "杂谈与生活记录" },
+    { id: "essay", label: "学习笔记", desc: "学习记录笔记，体现思考过程" },
   ],
   friends: [
     {

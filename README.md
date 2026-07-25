@@ -1,4 +1,4 @@
-# jwwang.log
+# Startint.log
 
 Startint 的个人技术博客，记录 AI 应用开发、Agent 架构、RAG 系统和知识图谱的技术笔记。
 
@@ -8,9 +8,7 @@ Startint 的个人技术博客，记录 AI 应用开发、Agent 架构、RAG 系
 
 ## 关于博主
 
-Startint (Wang Jingwen)，AI 应用开发工程师，北京理工大学在读硕士。
-
-热爱 AI 技术，专注于 Agent、RAG 和知识图谱方向。具备扎实的数理基础和编程能力，善于独立解决问题并推动项目落地。
+Startint，北京理工大学在读硕士。
 
 ## 内容地图
 

@@ -11,10 +11,8 @@ export async function getStaticPaths() {
   return entries
     .filter((entry) => !entry.data.draft && !entry.data.hidden && entry.data.published !== false)
     .map((entry) => {
-      const parts = entry.slug.split('/')
-      const filename = parts[parts.length - 1]
       return {
-        params: { slug: filename },
+        params: { slug: entry.slug },
         props: { entry },
       }
     })
@@ -26,7 +24,7 @@ export interface Props {
 
 const { entry } = Astro.props
 const post = entry.data
-const slug = entry.slug.replace(/^posts\//, '')
+const slug = entry.slug
 const htmlContent = await entry.render()
 const allPosts = await getAllPosts()
 const { prev, next } = getPrevNextPosts(allPosts, slug)

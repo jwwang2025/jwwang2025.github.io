@@ -12,7 +12,7 @@ export async function getAllPosts(): Promise<Post[]> {
       return true
     })
     .map((entry) => ({
-      slug: entry.slug.replace(/^posts\//, ''),
+      slug: entry.slug,
       title: entry.data.title,
       date: entry.data.date.toISOString().split('T')[0],
       tags: entry.data.tags || [],

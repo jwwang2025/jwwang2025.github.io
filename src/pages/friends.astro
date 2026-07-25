@@ -1,0 +1,39 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import { siteConfig } from '@/config'
+---
+
+<BaseLayout title="友链" description="友情链接" pageClass="friends-page">
+  <div class="page-frame">
+    <div class="page-hero">
+      <p class="eyebrow">Friends</p>
+      <h1>友情链接</h1>
+      <p>感谢各位朋友的支持，欢迎互相交流</p>
+    </div>
+
+    <div class="friends-grid">
+      {siteConfig.friends.map((friend) => (
+        <a href={friend.link} class="friend-card" target="_blank" rel="noopener noreferrer">
+          <div class="friend-avatar">
+            {friend.avatar ? (
+              <img src={friend.avatar} alt={friend.name} />
+            ) : (
+              <span>{friend.name[0]}</span>
+            )}
+          </div>
+          <div class="friend-copy">
+            <strong>{friend.name}</strong>
+            <em>{friend.desc}</em>
+          </div>
+          <span class="friend-arrow">-&gt;</span>
+        </a>
+      ))}
+    </div>
+
+    <div class="link-callout">
+      <h2>申请友链</h2>
+      <p>欢迎申请友情链接，请在 GitHub 提交 issue，或发送邮件联系我。</p>
+      <a href={siteConfig.author.links.github} class="text-link">提交申请</a>
+    </div>
+  </div>
+</BaseLayout>

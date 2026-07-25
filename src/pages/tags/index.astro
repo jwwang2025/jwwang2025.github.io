@@ -1,0 +1,23 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import TopicChip from '@/components/TopicChip.astro'
+import { getAllTags } from '@/utils/blog'
+
+const tags = await getAllTags()
+---
+
+<BaseLayout title="标签" description="浏览所有标签" pageClass="tags-page">
+  <div class="page-frame">
+    <div class="page-hero">
+      <p class="eyebrow">Tags</p>
+      <h1>标签</h1>
+      <p>共 {tags.length} 个标签，按文章数量排序</p>
+    </div>
+
+    <div class="topic-cloud topic-cloud-large">
+      {tags.map((tag) => (
+        <TopicChip name={tag.name} count={tag.count} href={`/tags/${tag.name}`} />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

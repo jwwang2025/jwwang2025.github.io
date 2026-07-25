@@ -1,0 +1,62 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import ArticleLine from '@/components/ArticleLine.astro'
+import { getPostsByTag, getAllTags, getPostsGroupedByYear } from '@/utils/blog'
+
+export async function getStaticPaths() {
+  const tags = await getAllTags()
+  return tags.map((tag) => ({
+    params: { tag: tag.name },
+    props: { tag: tag.name },
+  }))
+}
+
+export interface Props {
+  tag: string
+}
+
+const { tag } = Astro.props
+const posts = await getPostsByTag(tag)
+const groupedPosts = await getPostsGroupedByYear()
+const filteredGrouped = groupedPosts.map((group) => ({
+  ...group,
+  posts: group.posts.filter((p) => p.tags.includes(tag)),
+})).filter((group) => group.posts.length > 0)
+---
+
+<BaseLayout title={`标签: ${tag}`} description={`查看所有 ${tag} 相关文章`} pageClass="tag-page">
+  <div class="page-frame">
+    <a href="/tags" class="back-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+      返回标签页
+    </a>
+
+    <div class="page-hero">
+      <p class="eyebrow">#{tag}</p>
+      <h1>{tag}</h1>
+      <p>共 {posts.length} 篇文章</p>
+    </div>
+
+    {filteredGrouped.map((group) => (
+      <div class="year-section">
+        <h2>
+          {group.year}
+          <span>{group.posts.length} 篇</span>
+        </h2>
+        <div class="article-stream">
+          {group.posts.map((post) => (
+            <ArticleLine post={post} />
+          ))}
+        </div>
+      </div>
+    ))}
+
+    {posts.length === 0 && (
+      <div class="empty-state">
+        <p>该标签下暂无文章</p>
+      </div>
+    )}
+  </div>
+</BaseLayout>

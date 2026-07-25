@@ -1,0 +1,162 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import TopicChip from '@/components/TopicChip.astro'
+import ArticleLine from '@/components/ArticleLine.astro'
+import { siteConfig } from '@/config'
+import { getAllPosts } from '@/utils/blog'
+
+const posts = await getAllPosts()
+const recentPosts = posts.slice(0, 5)
+---
+
+<BaseLayout title="关于" description="关于我的个人信息" pageClass="about-page">
+  <div class="page-frame">
+    <div class="about-hero">
+      <div class="about-profile">
+        <img src={siteConfig.author.avatar} alt={siteConfig.author.name} />
+        <div class="about-identity">
+          <h1>{siteConfig.author.name}</h1>
+          <p class="about-en">{siteConfig.author.nameEn}</p>
+          <p class="about-summary">
+            北京理工大学在读硕士，AI 应用开发工程师。专注于 AI 基础设施、系统设计与模型优化方向。热爱技术，乐于分享，希望通过博客记录成长轨迹，与大家共同进步。
+          </p>
+          <div class="about-actions">
+            <a href={siteConfig.author.links.github} class="text-link">GitHub</a>
+            <a href={siteConfig.author.links.zhihu} class="text-link">Zhihu</a>
+            <a href={`mailto:${siteConfig.author.links.email}`} class="text-link">Email</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-snapshot">
+        <p class="snapshot-label">站点概览</p>
+        <div class="snapshot-grid">
+          <div>
+            <span>{posts.length}</span>
+            <em>文章</em>
+          </div>
+          <div>
+            <span>3</span>
+            <em>年</em>
+          </div>
+          <div>
+            <span>820+</span>
+            <em>关注者</em>
+          </div>
+          <div>
+            <span>50K+</span>
+            <em>阅读量</em>
+          </div>
+        </div>
+        <p class="snapshot-note">数据更新于 {new Date().toLocaleDateString()}</p>
+      </div>
+    </div>
+
+    <div class="about-layout">
+      <div>
+        <section class="site-block reveal-item">
+          <p class="block-eyebrow">关注方向</p>
+          <div class="focus-grid">
+            <div class="focus-card">
+              <small>01</small>
+              <span>AI Infra</span>
+              <h3>AI 基础设施</h3>
+              <p>GPU 集群、分布式训练、K8s 部署与 MLOps 实践</p>
+            </div>
+            <div class="focus-card">
+              <small>02</small>
+              <span>Model Optim</span>
+              <h3>模型优化</h3>
+              <p>量化压缩、推理加速、显存优化与性能调优</p>
+            </div>
+            <div class="focus-card">
+              <small>03</small>
+              <span>System Design</span>
+              <h3>系统设计</h3>
+              <p>高可用架构、微服务设计、云原生与可观测性</p>
+            </div>
+            <div class="focus-card">
+              <small>04</small>
+              <span>LLM & Agent</span>
+              <h3>大模型应用</h3>
+              <p>RAG 系统、智能体框架、多模态融合与工程落地</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="site-block reveal-item">
+          <p class="block-eyebrow">技术栈</p>
+          <div class="stack-panel">
+            <span class="skill-chip">Python</span>
+            <span class="skill-chip">TypeScript</span>
+            <span class="skill-chip">Go</span>
+            <span class="skill-chip">Vue</span>
+            <span class="skill-chip">React</span>
+            <span class="skill-chip">Node.js</span>
+            <span class="skill-chip">Docker</span>
+            <span class="skill-chip">Kubernetes</span>
+            <span class="skill-chip">PyTorch</span>
+            <span class="skill-chip">TensorFlow</span>
+            <span class="skill-chip">Redis</span>
+            <span class="skill-chip">PostgreSQL</span>
+          </div>
+        </section>
+
+        <section class="site-block reveal-item">
+          <p class="block-eyebrow">经历</p>
+          <div class="timeline">
+            <div class="timeline-card">
+              <div class="timeline-logo">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+              </div>
+              <div>
+                <time>2024 - 至今</time>
+                <h3>北京理工大学 <span>硕士</span></h3>
+                <p class="timeline-role">AI 应用开发工程师</p>
+                <p class="timeline-desc">研究方向：AI 基础设施与模型优化</p>
+              </div>
+            </div>
+            <div class="timeline-card">
+              <div class="timeline-logo">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+              </div>
+              <div>
+                <time>2020 - 2024</time>
+                <h3>北京理工大学 <span>学士</span></h3>
+                <p class="timeline-role">计算机科学与技术</p>
+                <p class="timeline-desc">主修课程：数据结构、操作系统、计算机网络、人工智能等</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="site-block reveal-item">
+          <p class="block-eyebrow">当前状态</p>
+          <div class="now-card">
+            <p>
+              📚 正在学习：模型推理优化与分布式训练<br/>
+              💻 正在开发：AI 推理引擎与 RAG 系统<br/>
+              📝 正在写作：MiniMind 复现系列文章<br/>
+              🎯 目标：成为优秀的 AI 系统工程师
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <div>
+        <section class="site-block reveal-item">
+          <p class="block-eyebrow">近期文章</p>
+          <div class="article-stream">
+            {recentPosts.map((post) => (
+              <ArticleLine post={post} />
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

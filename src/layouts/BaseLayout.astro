@@ -1,0 +1,144 @@
+---
+import { siteConfig } from '@/config'
+import AppNav from '@/components/AppNav.astro'
+import AppFooter from '@/components/AppFooter.astro'
+import SiteEffects from '@/components/SiteEffects.astro'
+import BackToTop from '@/components/BackToTop.astro'
+
+export interface Props {
+  title?: string
+  description?: string
+  pageClass?: string
+}
+
+const { title = siteConfig.title, description = siteConfig.description, pageClass = '' } = Astro.props
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN" class="effects-ready">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#101214" />
+  <title>{title} | jwwang.log</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+  <script>
+    const stored = localStorage.getItem('jwwang-theme')
+    const preferred = stored || 'dark'
+    document.documentElement.classList.add(preferred)
+    document.documentElement.style.setProperty('--theme-x', 'calc(100vw - 74px)')
+    document.documentElement.style.setProperty('--theme-y', '42px')
+  </script>
+</head>
+<body>
+  <div id="app-root" class={pageClass}>
+    <SiteEffects />
+    <AppNav />
+    <main>
+      <slot />
+    </main>
+    <AppFooter />
+    <BackToTop />
+  </div>
+  <script>
+    const themeToggle = document.querySelector('.theme-toggle')
+    const themeOptions = document.querySelectorAll('.theme-toggle-option')
+    const themes = ['light', 'dark', 'cyber']
+    let currentIndex = themes.indexOf(document.documentElement.classList[0])
+
+    function applyTheme(index) {
+      themes.forEach(t => document.documentElement.classList.remove(t))
+      document.documentElement.classList.add(themes[index])
+      themeToggle.setAttribute('data-theme', themes[index])
+      document.documentElement.style.setProperty('--theme-index', index)
+      localStorage.setItem('jwwang-theme', themes[index])
+      themeOptions.forEach((opt, i) => {
+        opt.classList.toggle('active', i === index)
+      })
+    }
+
+    themeOptions.forEach((opt, i) => {
+      opt.addEventListener('click', () => applyTheme(i))
+    })
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 't' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault()
+        currentIndex = (currentIndex + 1) % themes.length
+        applyTheme(currentIndex)
+      }
+    })
+
+    themeToggle.addEventListener('click', (e) => {
+      if (!e.target.closest('.theme-toggle-option')) {
+        currentIndex = (currentIndex + 1) % themes.length
+        applyTheme(currentIndex)
+      }
+    })
+
+    const surfaces = document.querySelectorAll('.knowledge-card, .article-card, .friend-card, .about-profile, .about-snapshot, .focus-card, .now-card, .stack-panel')
+    let isHovering = false
+
+    surfaces.forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        isHovering = true
+        document.documentElement.classList.add('is-hovering-surface')
+      })
+      el.addEventListener('mouseleave', () => {
+        isHovering = false
+        document.documentElement.classList.remove('is-hovering-surface')
+      })
+    })
+
+    document.addEventListener('mousemove', (e) => {
+      document.documentElement.style.setProperty('--cursor-x', `${e.clientX}px`)
+      document.documentElement.style.setProperty('--cursor-y', `${e.clientY}px`)
+      
+      if (isHovering) {
+        surfaces.forEach(el => {
+          const rect = el.getBoundingClientRect()
+          const centerX = rect.left + rect.width / 2
+          const centerY = rect.top + rect.height / 2
+          const x = (e.clientX - centerX) / (rect.width / 2)
+          const y = (e.clientY - centerY) / (rect.height / 2)
+          const tiltX = y * -5
+          const tiltY = x * 5
+          const spotX = ((e.clientX - rect.left) / rect.width) * 100
+          const spotY = ((e.clientY - rect.top) / rect.height) * 100
+          el.style.setProperty('--tilt-x', `${tiltX}deg`)
+          el.style.setProperty('--tilt-y', `${tiltY}deg`)
+          el.style.setProperty('--spot-x', `${spotX}%`)
+          el.style.setProperty('--spot-y', `${spotY}%`)
+        })
+      }
+    })
+
+    let scrollTimeout
+    document.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout)
+      document.documentElement.classList.add('is-scrolled')
+      scrollTimeout = setTimeout(() => {
+        if (window.scrollY < 20) {
+          document.documentElement.classList.remove('is-scrolled')
+        }
+      }, 200)
+    })
+
+    const revealItems = document.querySelectorAll('.reveal-item')
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+        }
+      })
+    }, { threshold: 0.1 })
+
+    revealItems.forEach(item => observer.observe(item))
+  </script>
+</body>
+</html>

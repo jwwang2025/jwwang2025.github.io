@@ -1,0 +1,167 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import AuthorSidebar from '@/components/AuthorSidebar.astro'
+import TocSidebar from '@/components/TocSidebar.astro'
+import { siteConfig } from '@/config'
+import { getAllPosts, getPostsBySeries, getPrevNextPosts, formatDate, generateToc } from '@/utils/blog'
+
+export async function getStaticPaths() {
+  const entries = await getCollection('posts')
+  return entries
+    .filter((entry) => !entry.data.draft && !entry.data.hidden && entry.data.published !== false)
+    .map((entry) => {
+      const parts = entry.slug.split('/')
+      const filename = parts[parts.length - 1]
+      return {
+        params: { slug: filename },
+        props: { entry },
+      }
+    })
+}
+
+export interface Props {
+  entry: CollectionEntry<'posts'>
+}
+
+const { entry } = Astro.props
+const post = entry.data
+const slug = entry.slug.replace(/^posts\//, '')
+const htmlContent = await entry.render()
+const allPosts = await getAllPosts()
+const { prev, next } = getPrevNextPosts(allPosts, slug)
+const seriesPosts = post.series ? await getPostsBySeries(post.series) : []
+
+const toc = generateToc(htmlContent)
+---
+
+<BaseLayout title={post.title} description={post.description} pageClass="post-page">
+  <AuthorSidebar />
+  {toc.length > 0 && <TocSidebar toc={toc} />}
+
+  <div class="page-wrapper-narrow">
+    <header class="post-header">
+      <a href="/posts" class="post-header-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+        返回文章库
+      </a>
+
+      <div class="post-header-overline">
+        <span>文章详情</span>
+        <span>{formatDate(post.date)}</span>
+      </div>
+
+      <h1 class="post-title">{post.title}</h1>
+
+      {post.description && <p class="post-desc">{post.description}</p>}
+
+      <div class="post-header-footer">
+        <div class="post-meta">
+          <span>{post.readingTime || 5} min read</span>
+          <span class="post-meta-sep">|</span>
+          <span>{siteConfig.author.name}</span>
+          <span class="post-meta-sep">|</span>
+          <span>{post.tags.length} 个标签</span>
+        </div>
+        <a href="#toc" class="post-header-jump" aria-label="跳转到目录">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="post-tags">
+        {post.tags.map((tag) => (
+          <a href={`/tags/${tag}`} class="tag-chip">{tag}</a>
+        ))}
+      </div>
+    </header>
+
+    <article class="prose">
+      <div set:html={htmlContent} />
+    </article>
+
+    {seriesPosts.length > 0 && (
+      <section class="post-series">
+        <div>
+          <p>Series</p>
+          <h2>{post.series}</h2>
+        </div>
+        <ol>
+          {seriesPosts.map((seriesPost, index) => (
+            <li class={seriesPost.slug === slug ? 'current' : ''}>
+              <a href={`/posts/${seriesPost.slug}`}>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                {seriesPost.title}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )}
+
+    <nav class="post-nav">
+      {prev && (
+        <a href={`/posts/${prev.slug}`} class="post-nav-item">
+          <span class="post-nav-label">上一篇</span>
+          <span class="post-nav-title">{prev.title}</span>
+        </a>
+      )}
+      {next && (
+        <a href={`/posts/${next.slug}`} class="post-nav-item next">
+          <span class="post-nav-label">下一篇</span>
+          <span class="post-nav-title">{next.title}</span>
+        </a>
+      )}
+    </nav>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const codeBlocks = document.querySelectorAll('pre')
+      codeBlocks.forEach((block) => {
+        const wrapper = document.createElement('div')
+        wrapper.className = 'code-block-wrapper'
+        block.parentNode!.insertBefore(wrapper, block)
+        wrapper.appendChild(block)
+
+        const copyBtn = document.createElement('button')
+        copyBtn.className = 'code-copy-btn'
+        copyBtn.textContent = '复制'
+        copyBtn.addEventListener('click', async () => {
+          const code = block.textContent || ''
+          await navigator.clipboard.writeText(code)
+          copyBtn.textContent = '已复制'
+          copyBtn.classList.add('copied')
+          setTimeout(() => {
+            copyBtn.textContent = '复制'
+            copyBtn.classList.remove('copied')
+          }, 2000)
+        })
+        wrapper.appendChild(copyBtn)
+      })
+
+      const readingBar = document.getElementById('reading-bar')
+      const progressTrack = document.querySelector('.post-author-progress-track span')
+      const orbit = document.querySelector('.post-author-orbit')
+
+      document.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight
+        const progress = docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0
+
+        if (readingBar) {
+          readingBar.style.width = `${progress}%`
+        }
+        if (progressTrack) {
+          progressTrack.style.width = `${progress}%`
+        }
+        if (orbit) {
+          orbit.style.setProperty('--reading-progress', progress)
+        }
+      })
+    })
+  </script>
+</BaseLayout>

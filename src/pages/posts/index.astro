@@ -1,0 +1,89 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import ArticleLine from '@/components/ArticleLine.astro'
+import TopicChip from '@/components/TopicChip.astro'
+import { siteConfig } from '@/config'
+import { getAllPosts, getAllTags, getPostsGroupedByYear } from '@/utils/blog'
+
+const posts = await getAllPosts()
+const tags = await getAllTags()
+const groupedPosts = await getPostsGroupedByYear()
+---
+
+<BaseLayout title="文章库" description="浏览所有文章" pageClass="posts-page">
+  <div class="page-frame">
+    <div class="page-hero">
+      <p class="eyebrow">Archive</p>
+      <h1>文章库</h1>
+      <p>共 {posts.length} 篇文章，按主题和年份组织</p>
+    </div>
+
+    <div class="archive-directory">
+      <div class="archive-directory-head">
+        <div>
+          <h2>主题目录</h2>
+          <p>按主题筛选文章</p>
+        </div>
+      </div>
+      <div class="topic-directory">
+        {siteConfig.topicDirectory.map((topic) => (
+          <button class={`archive-topic ${topic.id === 'all' ? 'active' : ''}`}>
+            <span class="archive-topic-index">{String(siteConfig.topicDirectory.indexOf(topic) + 1).padStart(2, '0')}</span>
+            <span class="archive-topic-copy">
+              <strong>{topic.label}</strong>
+              <small>{topic.desc}</small>
+            </span>
+            <span class="archive-topic-count">0</span>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="archive-results">
+      <div class="archive-panel">
+        <div class="search-box">
+          <span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="M21 21l-4.35-4.35"/>
+            </svg>
+          </span>
+          <input type="text" placeholder="搜索文章标题或标签..." />
+        </div>
+      </div>
+
+      <div class="archive-results-head">
+        <div>
+          <h2>全部文章</h2>
+          <p class="archive-count">共 {posts.length} 篇</p>
+        </div>
+      </div>
+
+      <div class="filter-row">
+        <span class="topic-button">
+          全部标签
+        </span>
+        {tags.slice(0, 6).map((tag) => (
+          <a href={`/tags/${tag.name}`} class="topic-button">
+            #{tag.name}
+            <span>{tag.count}</span>
+          </a>
+        ))}
+      </div>
+
+      {groupedPosts.map((group) => (
+        <div class="year-section">
+          <h2>
+            {group.year}
+            <span>{group.posts.length} 篇</span>
+          </h2>
+          <div class="article-stream">
+            {group.posts.map((post) => (
+              <ArticleLine post={post} />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

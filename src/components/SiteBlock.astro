@@ -1,0 +1,18 @@
+---
+export interface Props {
+  title?: string
+  description?: string
+  eyebrow?: string
+}
+
+const { title, description, eyebrow } = Astro.props
+---
+
+<section class="site-block reveal-item">
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <div class="block-head">
+    {title && <h2 class="block-title">{title}</h2>}
+    {description && <p class="block-desc">{description}</p>}
+  </div>
+  <slot />
+</section>

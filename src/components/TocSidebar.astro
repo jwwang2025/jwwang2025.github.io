@@ -1,0 +1,42 @@
+---
+export interface Props {
+  toc: { id: string; text: string; level: number }[]
+}
+
+const { toc } = Astro.props
+---
+
+<aside class="toc-sidebar">
+  <p class="toc-label">目录</p>
+  <nav>
+    {toc.map((item) => (
+      <a
+        href={`#${item.id}`}
+        class={`toc-link ${item.level === 3 ? 'toc-link-h3' : ''}`}
+        data-id={item.id}
+      >
+        {item.text}
+      </a>
+    ))}
+  </nav>
+</aside>
+
+<script>
+  const headings = document.querySelectorAll('h2[id], h3[id]')
+  const tocLinks = document.querySelectorAll('.toc-link')
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id')
+          tocLinks.forEach((link) => {
+            link.classList.toggle('toc-link-active', link.dataset.id === id)
+          })
+        }
+      })
+    },
+    { rootMargin: '-20% 0% -35% 0%' }
+  )
+
+  headings.forEach((heading) => observer.observe(heading))
+</script>

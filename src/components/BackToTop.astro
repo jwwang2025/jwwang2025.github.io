@@ -1,0 +1,22 @@
+---
+---
+
+<button class="back-to-top" aria-label="返回顶部" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M12 19V5M5 12l7-7 7 7"/>
+  </svg>
+</button>
+
+<script>
+  const backToTop = document.querySelector('.back-to-top')
+  let lastScrollY = 0
+
+  document.addEventListener('scroll', () => {
+    if (window.scrollY > 400 && window.scrollY > lastScrollY) {
+      backToTop.classList.add('visible')
+    } else if (window.scrollY < 300) {
+      backToTop.classList.remove('visible')
+    }
+    lastScrollY = window.scrollY
+  })
+</script>

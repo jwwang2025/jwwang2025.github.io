@@ -1,0 +1,14 @@
+---
+import { siteConfig } from '@/config'
+---
+
+<div class="knowledge-grid">
+  {siteConfig.knowledgeMap.map((item, index) => (
+    <a href={item.link} class="knowledge-card">
+      <span class="knowledge-index">{String(index + 1).padStart(2, '0')}</span>
+      <h3>{item.title}</h3>
+      <p>{item.description}</p>
+      <span class="knowledge-link">{item.label} -&gt;</span>
+    </a>
+  ))}
+</div>

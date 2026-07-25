@@ -1,0 +1,19 @@
+---
+import type { Post } from '@/config'
+import { formatDate } from '@/utils/blog'
+
+export interface Props {
+  post: Post
+}
+
+const { post } = Astro.props
+---
+
+<a href={`/posts/${post.slug}`} class="article-line">
+  <span class="article-line-date">{formatDate(post.date)}</span>
+  <span class="article-line-copy">
+    <span class="article-line-title">{post.title}</span>
+    {post.description && <span class="article-line-desc">{post.description}</span>}
+  </span>
+  <span class="article-line-tag">{post.tags[0] || ''}</span>
+</a>

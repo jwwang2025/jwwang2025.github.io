@@ -1,0 +1,122 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import SiteBlock from '@/components/SiteBlock.astro'
+import KnowledgeMap from '@/components/KnowledgeMap.astro'
+import ArticleCard from '@/components/ArticleCard.astro'
+import ArticleLine from '@/components/ArticleLine.astro'
+import TopicChip from '@/components/TopicChip.astro'
+import { siteConfig } from '@/config'
+import { getAllPosts, getAllTags } from '@/utils/blog'
+
+const posts = await getAllPosts()
+const tags = await getAllTags()
+const latestPosts = posts.slice(0, 6)
+const featuredPosts = posts.slice(0, 4)
+---
+
+<BaseLayout title="首页" pageClass="home-page">
+  <div class="hero-frame">
+    <div class="hero-main">
+      <p class="hero-kicker reveal-item">
+        <span>AI Infrastructure</span>
+        <span>系统设计</span>
+        <span>技术思考</span>
+      </p>
+      <h1 class="hero-display-title reveal-item">
+        王静文的<br />技术博客
+      </h1>
+      <p class="hero-summary reveal-item">
+        记录 AI 基础设施、系统设计与技术思考。分享大模型应用开发、推理优化、分布式系统等领域的实践经验。
+      </p>
+      <div class="hero-actions reveal-item">
+        <a href="/posts" class="primary-action">
+          <span>浏览文章库</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="/about" class="secondary-action">
+          <span>了解更多</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M12 20v-6M18 20v-6M6 20v-6"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-dossier">
+      <a href="/about" class="hero-identity">
+        <div class="hero-avatar-ring">
+          <img src={siteConfig.author.avatar} alt={siteConfig.author.name} />
+        </div>
+        <span>
+          <strong>{siteConfig.author.name}</strong>
+          <small>{siteConfig.author.role}</small>
+        </span>
+        <span class="hero-identity-arrow">-&gt;</span>
+      </a>
+      <dl>
+        <div>
+          <dt>文章数</dt>
+          <dd>{posts.length}</dd>
+        </div>
+        <div>
+          <dt>关注者</dt>
+          <dd>820+</dd>
+        </div>
+        <div>
+          <dt>标签</dt>
+          <dd>{tags.length}</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="site-main">
+    <SiteBlock
+      eyebrow="知识领域"
+      title="知识地图"
+      description="探索我关注的技术领域，找到感兴趣的内容"
+    >
+      <KnowledgeMap />
+    </SiteBlock>
+
+    <SiteBlock
+      eyebrow="最新更新"
+      title="近期文章"
+      description="最新发布的技术文章"
+    >
+      <div class="home-latest">
+        {latestPosts[0] && <ArticleCard post={latestPosts[0]} large />}
+        <div class="article-stream">
+          {latestPosts.slice(1).map((post) => (
+            <ArticleLine post={post} />
+          ))}
+        </div>
+      </div>
+    </SiteBlock>
+
+    <SiteBlock
+      eyebrow="精选内容"
+      title="值得一读"
+      description="精选的优质文章"
+    >
+      <div class="card-grid">
+        {featuredPosts.map((post) => (
+          <ArticleCard post={post} />
+        ))}
+      </div>
+    </SiteBlock>
+
+    <SiteBlock
+      eyebrow="热门主题"
+      title="热门标签"
+    >
+      <div class="topic-cloud topic-cloud-large">
+        {tags.slice(0, 16).map((tag) => (
+          <TopicChip name={tag.name} count={tag.count} href={`/tags/${tag.name}`} />
+        ))}
+      </div>
+    </SiteBlock>
+  </div>
+</BaseLayout>

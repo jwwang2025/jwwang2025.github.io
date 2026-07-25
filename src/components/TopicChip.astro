@@ -1,0 +1,15 @@
+---
+export interface Props {
+  name: string
+  count?: number
+  active?: boolean
+  href?: string
+}
+
+const { name, count = 0, active = false, href = '#' } = Astro.props
+---
+
+<a href={href} class={`topic-chip ${active ? 'topic-chip-active' : ''}`}>
+  #{name}
+  {count > 0 && <span class="topic-count">{count}</span>}
+</a>

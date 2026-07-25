@@ -25,12 +25,16 @@ export interface Props {
 const { entry } = Astro.props
 const post = entry.data
 const slug = entry.slug
-const htmlContent = await entry.render()
+const { Content, headings } = await entry.render()
 const allPosts = await getAllPosts()
 const { prev, next } = getPrevNextPosts(allPosts, slug)
 const seriesPosts = post.series ? await getPostsBySeries(post.series) : []
 
-const toc = generateToc(htmlContent.html)
+const toc = headings.map((h) => ({
+  id: h.slug,
+  text: h.text,
+  level: h.depth,
+}))
 ---
 
 <BaseLayout title={post.title} description={post.description} pageClass="post-page">
@@ -78,7 +82,7 @@ const toc = generateToc(htmlContent.html)
     </header>
 
     <article class="prose">
-      <div set:html={htmlContent.html} />
+      <Content />
     </article>
 
     {seriesPosts.length > 0 && (

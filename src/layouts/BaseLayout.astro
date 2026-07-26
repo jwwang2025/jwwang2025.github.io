@@ -143,6 +143,34 @@ const currentPath = Astro.url.pathname
     }, { threshold: 0.1 })
 
     revealItems.forEach(item => observer.observe(item))
+
+    function setEqualCardHeights() {
+      const grids = document.querySelectorAll('.card-grid, .knowledge-grid, .friends-grid')
+      grids.forEach(grid => {
+        const cards = grid.querySelectorAll('.article-card, .knowledge-card, .friend-card')
+        if (cards.length === 0) return
+        let maxHeight = 0
+        cards.forEach(card => {
+          card.style.height = 'auto'
+          maxHeight = Math.max(maxHeight, card.offsetHeight)
+        })
+        cards.forEach(card => {
+          card.style.height = `${maxHeight}px`
+        })
+      })
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setEqualCardHeights()
+    })
+
+    let resizeTimeout
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout)
+      resizeTimeout = setTimeout(() => {
+        setEqualCardHeights()
+      }, 200)
+    })
   </script>
 </body>
 </html>

@@ -598,7 +598,6 @@ html.theme-switching .theme-transition-sheen {
 .theme-toggle-option {
   position: relative;
   z-index: 1;
-  width: 30px;
   height: 30px;
   display: grid;
   place-items: center;
@@ -617,11 +616,6 @@ html.theme-switching .theme-transition-sheen {
     color 180ms var(--ease),
     opacity 180ms var(--ease),
     transform 220ms var(--ease-out);
-}
-
-.theme-toggle-terminal {
-  font-size: 0.66rem;
-  font-weight: 900;
 }
 
 .theme-toggle-option.active {
@@ -1187,7 +1181,7 @@ html.theme-switching .theme-transition-sheen {
 }
 
 .article-card {
-  min-height: 260px;
+  height: 260px;
   display: flex;
   flex-direction: column;
   padding: 22px;

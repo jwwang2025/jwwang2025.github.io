@@ -1,10 +1,10 @@
 export const siteConfig = {
-  title: "jwwang.log",
+  title: "Startint.log",
   subtitle: "AI Infra & Systems",
   description: "Startint的个人博客，记录 AI 基础设施、系统设计与技术思考",
   author: {
     name: "Startint",
-    nameEn: "Jingwen Wang",
+    nameEn: "Startint",
     role: "AI 应用开发工程师",
     avatar: "/avatar.png",
     focus: ["AI Infra", "系统设计", "模型优化", "推理部署"],

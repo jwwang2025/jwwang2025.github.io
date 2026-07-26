@@ -1185,6 +1185,7 @@ html.theme-switching .theme-transition-sheen {
   display: flex;
   flex-direction: column;
   padding: 22px;
+  overflow: hidden;
 }
 
 .article-card-large {

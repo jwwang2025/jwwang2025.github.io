@@ -23,11 +23,18 @@ draft: false
 
 MiniMind 是由 jingyaogong 开源的超小型语言模型项目，以极低的成本帮助个人开发者从零开始构建自己的语言模型。最小版本仅包含 **25.8M 参数**，在普通 NVIDIA 3090 GPU 上仅需 **2 小时**即可完成完整训练，总成本约 **3 元人民币**。
 
-本文将带你从零开始复现 MiniMind 的训练全流程，深入理解：
+本文将从零开始复现 MiniMind 的训练全流程，记录自己学习复现这一项目的过程中的理解，主要内容包括：
 - Transformer Decoder-Only 架构的核心实现
 - 混合专家（MoE）技术如何提升小模型性能
 - 从预训练到 DPO 的完整训练流水线
 - 轻量化训练的工程实践技巧
+
+## 前提知识学习
+
+### 核心特性
+
+
+
 
 ## 项目概述
 
@@ -138,7 +145,7 @@ data:
 ## 模型架构解析
 
 ### Transformer Decoder-Only 架构
-
+![alt text](../../../../../public/images/posts/2026/07/minimind-reproduction/minimind_dense_arch.png)
 MiniMind 采用经典的 Transformer Decoder-Only 架构，与 GPT 系列模型类似：
 
 ```

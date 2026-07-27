@@ -598,6 +598,7 @@ html.theme-switching .theme-transition-sheen {
 .theme-toggle-option {
   position: relative;
   z-index: 1;
+  width: 30px;
   height: 30px;
   display: grid;
   place-items: center;

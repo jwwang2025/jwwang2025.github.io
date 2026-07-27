@@ -22,15 +22,20 @@ const currentPath = Astro.url.pathname
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={description} />
   <meta name="theme-color" content="#101214" />
-  <title>{title} | jwwang.log</title>
+  <title>{title} | Startint.log</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.17.0/dist/katex.min.css" />
   <link rel="stylesheet" href="/_astro/main.css" />
   <script>
-    const stored = localStorage.getItem('jwwang-theme')
-    const preferred = stored || 'dark'
+    const storedNew = localStorage.getItem('startint-theme')
+    const storedOld = localStorage.getItem('jwwang-theme')
+    const preferred = storedNew || storedOld || 'dark'
+    if (storedOld && !storedNew) {
+      localStorage.setItem('startint-theme', storedOld)
+      localStorage.removeItem('jwwang-theme')
+    }
     document.documentElement.classList.add(preferred)
     document.documentElement.style.setProperty('--theme-x', 'calc(100vw - 74px)')
     document.documentElement.style.setProperty('--theme-y', '42px')
@@ -60,7 +65,7 @@ const currentPath = Astro.url.pathname
       document.documentElement.classList.add(themes[index])
       themeToggle.setAttribute('data-theme', themes[index])
       document.documentElement.style.setProperty('--theme-index', index)
-      localStorage.setItem('jwwang-theme', themes[index])
+      localStorage.setItem('startint-theme', themes[index])
       themeOptions.forEach((opt, i) => {
         opt.classList.toggle('active', i === index)
       })

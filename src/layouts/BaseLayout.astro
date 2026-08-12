@@ -60,12 +60,29 @@ const currentPath = Astro.url.pathname
     const themeOptions = document.querySelectorAll('.theme-toggle-option')
     const themes = ['light', 'dark', 'cyber']
     let currentIndex = themes.indexOf(document.documentElement.classList[0])
+    let indicatorPositions = [0, 0, 0]
 
-    function getIndicatorStep() {
-      if (!themeToggle) return 34
+    // 逐个图标测量实际中心，计算指示器需要移动的精确距离
+    function calculatePositions() {
+      if (!themeIndicator || !themeToggle) return [0, 0, 0]
       const track = themeToggle.querySelector('.theme-toggle-track')
-      const trackWidth = track?.getBoundingClientRect().width ?? 0
-      return trackWidth / 3
+      if (!track) return [0, 0, 0]
+      const trackRect = track.getBoundingClientRect()
+      // 临时移除transform测量指示器静态中心
+      const savedTransform = themeIndicator.style.transform
+      const savedTransition = themeIndicator.style.transition
+      themeIndicator.style.transition = 'none'
+      themeIndicator.style.transform = 'translateX(0)'
+      const indRect = themeIndicator.getBoundingClientRect()
+      const staticCenter = indRect.left + indRect.width / 2 - trackRect.left
+      themeIndicator.style.transform = savedTransform
+      themeIndicator.style.transition = savedTransition
+      // 逐个图标测量实际中心，计算精确偏移
+      return Array.from(themeOptions).map(opt => {
+        const optRect = opt.getBoundingClientRect()
+        const iconCenter = optRect.left + optRect.width / 2 - trackRect.left
+        return iconCenter - staticCenter
+      })
     }
 
     function applyTheme(index) {
@@ -78,19 +95,29 @@ const currentPath = Astro.url.pathname
         opt.classList.toggle('active', i === index)
       })
       if (themeIndicator) {
-        const step = getIndicatorStep()
-        themeIndicator.style.transform = `translateX(${index * step}px)`
+        themeIndicator.style.transform = `translateX(${indicatorPositions[index]}px)`
       }
     }
 
-    // Initialize indicator position without transition to avoid jump
+    // Initialize: calculate positions then set without transition
     if (themeIndicator) {
       requestAnimationFrame(() => {
-        const initialStep = getIndicatorStep()
+        indicatorPositions = calculatePositions()
         const saved = localStorage.getItem('startint-theme')
         const initialIndex = saved ? themes.indexOf(saved) : (currentIndex >= 0 ? currentIndex : 1)
         themeIndicator.style.transition = 'none'
-        themeIndicator.style.transform = `translateX(${initialIndex * initialStep}px)`
+        themeIndicator.style.transform = `translateX(${indicatorPositions[initialIndex]}px)`
+        requestAnimationFrame(() => {
+          themeIndicator.style.transition = ''
+        })
+      })
+      // 窗口尺寸变化时重新计算
+      window.addEventListener('resize', () => {
+        indicatorPositions = calculatePositions()
+        const saved = localStorage.getItem('startint-theme')
+        const idx = saved ? themes.indexOf(saved) : (currentIndex >= 0 ? currentIndex : 1)
+        themeIndicator.style.transition = 'none'
+        themeIndicator.style.transform = `translateX(${indicatorPositions[idx]}px)`
         requestAnimationFrame(() => {
           themeIndicator.style.transition = ''
         })

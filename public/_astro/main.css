@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 :root {
   color-scheme: dark;
@@ -522,7 +522,7 @@ html.theme-switching .theme-transition-sheen {
 .theme-toggle {
   --theme-index: 1;
   position: relative;
-  width: 104px;
+  width: 110px;
   height: 38px;
   padding: 3px;
   overflow: hidden;
@@ -554,13 +554,15 @@ html.theme-switching .theme-transition-sheen {
   --theme-index: 2;
 }
 
+
+
 .theme-toggle-track {
   position: relative;
   width: 100%;
   height: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  align-items: center;
+  place-items: center;
 }
 
 .theme-toggle-glow {
@@ -576,8 +578,8 @@ html.theme-switching .theme-transition-sheen {
 
 .theme-toggle-indicator {
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 3px;
+  left: 5px;
   width: 30px;
   height: 30px;
   border-radius: 999px;
@@ -587,7 +589,6 @@ html.theme-switching .theme-transition-sheen {
     0 4px 12px color-mix(in srgb, black 22%, transparent),
     0 1px 2px color-mix(in srgb, black 16%, transparent),
     inset 0 1px 0 color-mix(in srgb, white 28%, transparent);
-  transform: translateX(calc(var(--theme-index) * 32px));
   transition:
     transform 260ms var(--ease-out),
     background 220ms var(--ease),
@@ -607,9 +608,6 @@ html.theme-switching .theme-transition-sheen {
   border-radius: 999px;
   background: transparent;
   color: var(--faint);
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
-  line-height: 1;
   opacity: 0.72;
   transform: scale(0.92);
   cursor: pointer;
@@ -628,6 +626,12 @@ html.theme-switching .theme-transition-sheen {
   color: var(--bg);
   opacity: 1;
   transform: scale(1);
+}
+
+.theme-toggle-option svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2.25;
 }
 
 .theme-toggle:hover {
@@ -3093,7 +3097,8 @@ pre[class*="language-"]::before,
   }
 
   .theme-toggle-indicator {
-    transform: translateX(calc(var(--theme-index) * 31px));
+    top: 3px;
+    left: 4.5px;
   }
 
   .nav-center {

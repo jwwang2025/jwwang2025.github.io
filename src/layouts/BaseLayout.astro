@@ -56,9 +56,17 @@ const currentPath = Astro.url.pathname
   </div>
   <script>
     const themeToggle = document.querySelector('.theme-toggle')
+    const themeIndicator = themeToggle?.querySelector('.theme-toggle-indicator')
     const themeOptions = document.querySelectorAll('.theme-toggle-option')
     const themes = ['light', 'dark', 'cyber']
     let currentIndex = themes.indexOf(document.documentElement.classList[0])
+
+    function getIndicatorStep() {
+      if (!themeToggle) return 34
+      const track = themeToggle.querySelector('.theme-toggle-track')
+      const trackWidth = track?.getBoundingClientRect().width ?? 0
+      return trackWidth / 3
+    }
 
     function applyTheme(index) {
       themes.forEach(t => document.documentElement.classList.remove(t))
@@ -68,6 +76,24 @@ const currentPath = Astro.url.pathname
       localStorage.setItem('startint-theme', themes[index])
       themeOptions.forEach((opt, i) => {
         opt.classList.toggle('active', i === index)
+      })
+      if (themeIndicator) {
+        const step = getIndicatorStep()
+        themeIndicator.style.transform = `translateX(${index * step}px)`
+      }
+    }
+
+    // Initialize indicator position without transition to avoid jump
+    if (themeIndicator) {
+      requestAnimationFrame(() => {
+        const initialStep = getIndicatorStep()
+        const saved = localStorage.getItem('startint-theme')
+        const initialIndex = saved ? themes.indexOf(saved) : (currentIndex >= 0 ? currentIndex : 1)
+        themeIndicator.style.transition = 'none'
+        themeIndicator.style.transform = `translateX(${initialIndex * initialStep}px)`
+        requestAnimationFrame(() => {
+          themeIndicator.style.transition = ''
+        })
       })
     }
 

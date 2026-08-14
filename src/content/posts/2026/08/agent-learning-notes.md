@@ -9,12 +9,12 @@ tags:
   - LLM
   - 学习笔记
   - AI Infra
-readingTime: 18
+readingTime: 24
 ---
 
 ## 引言
 
-Agent（智能体）是当前 LLM 应用最活跃的方向之一，但相关概念繁杂、术语混乱：从 ReAct 到 Function Calling，从单智能体到 Multi-Agent，从 LangChain 到 LangGraph，初学者很容易迷失。本文是我学习 Agent 过程中的系统整理，试图建立一个清晰的知识地图，帮助快速理解 Agent 的本质、能力边界与工程实现。
+Agent（智能体）是当前 LLM 应用最活跃的方向之一，但相关概念繁杂、术语混乱：从 ReAct 到 Function Calling，从单智能体到 Multi-Agent，从 LangChain 到 LangGraph。本文是我学习 Agent 过程中的系统整理以及简单思考，试图建立一个清晰的知识地图，使能够快速理解 Agent 的本质、能力边界与工程实现，并且帮助自己进行知识的回顾。
 
 ## 什么是 Agent
 
@@ -42,14 +42,35 @@ Agent 是以 LLM 为大脑、能够感知环境、做出决策、执行动作并
 
 ### 1. 推理与行动（ReAct）
 
-ReAct（Reasoning + Acting）是 Agent 最经典的范式，由 Yao 等人在 2022 年提出。核心思想是让 LLM 交替进行思考和行动：
+ReAct（Reasoning + Acting）是 Agent 最经典的范式，核心是 Thought（思考）-Action（行动）-Observation（观察） 循环（简称 TAO 循环）：
+
+**工作流程：**
+
+步骤 1（Thought）：模型接收用户任务（或上一轮 Observation），分析当前掌握的信息是否足够，判断下一步应该做什么。
+
+步骤 2（Action）：根据 Thought 的判断，执行一个具体动作——通常是调用搜索、计算、数据库查询等外部工具。
+
+步骤 3（Observation）：接收 Action 返回的结果，将其作为新信息加入上下文。
+
+步骤 4（循环判断）：模型评估当前信息是否足够回答原始问题。如果不够，回到步骤 1 继续下一轮；如果足够，输出最终答案。
+
+循环终止条件：模型判断已获得足够信息，或达到系统设定的最大轮次。
+
+**执行示例：**
 
 ```text
-Thought: 我需要查询北京今天的天气
-Action: search_weather("北京")
-Observation: 北京今天晴，最高温度 32℃
-Thought: 我已经获得天气信息，可以回答用户了
-Answer: 北京今天晴天，最高气温 32 度。
+用户问："北京今天的气温多少？需要带伞吗？"
+
+第 1 轮：
+Thought：这个问题需要实时天气数据，我应该先查北京今天的天气。
+Action：Search["北京今天天气"]
+Observation：北京今天晴，最高气温 22°C，最低 10°C，无降水。
+
+第 2 轮：
+Thought：我已经知道今天晴、无降水，可以回答是否带伞了。信息足够，直接整理答案。
+Action：Finish["北京今天最高 22°C，最低 10°C，晴天无降水，不需要带伞。"]
+
+两轮循环完成任务：第 1 轮获取事实信息，第 2 轮基于事实做出判断并输出最终答案。
 ```
 
 **关键洞察**：将"思考过程"显式化（Chain-of-Thought），让模型在行动前先推理，显著提升了任务的准确性和可解释性。
@@ -257,26 +278,6 @@ Agent 行为高度动态，调试困难。必备能力：
 2. 长期记忆与 RAG 结合
 3. Human-in-the-loop 工作流
 4. Agent 评估与对齐方法
-
-### 推荐资源
-
-- 论文：ReAct、Toolformer、Reflexion、Tree of Thoughts
-- 项目：LangGraph 官方教程、AutoGen Examples、OpenAI Cookbook
-- 博客：Lilian Weng 的《LLM Powered Autonomous Agents》、Andrew Ng 的 Agentic AI 课程
-
-## 常见误区
-
-### 误区 1：Agent = LLM + 工具
-
-**正解**：工具只是手段，**自主决策与反馈循环**才是 Agent 的核心。一个只调用一次工具的程序不是 Agent，只是普通的 LLM 应用。
-
-### 误区 2：Agent 越复杂越好
-
-**正解**：复杂度应当匹配任务。简单 RAG 用单次调用即可，没必要套上多智能体框架。过度工程化会牺牲可靠性、增加成本。
-
-### 误区 3：Prompt 写好就够了
-
-**正解**：Prompt 是基础，但工程实现同样重要——状态管理、错误处理、可观测性、评估闭环，这些才是生产级 Agent 的关键。
 
 ## 总结
 

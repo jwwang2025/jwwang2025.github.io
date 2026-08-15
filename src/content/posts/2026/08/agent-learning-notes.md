@@ -73,8 +73,6 @@ Action：Finish["北京今天最高 22°C，最低 10°C，晴天无降水，不
 两轮循环完成任务：第 1 轮获取事实信息，第 2 轮基于事实做出判断并输出最终答案。
 ```
 
-**关键洞察**：将"思考过程"显式化（Chain-of-Thought），让模型在行动前先推理，显著提升了任务的准确性和可解释性。
-
 ### 2. 工具调用（Tool Use / Function Calling）
 
 工具调用让 Agent 突破 LLM 的能力边界：
@@ -168,7 +166,7 @@ Replanner: 根据执行结果动态调整计划
 
 ### 4. Multi-Agent 架构
 
-复杂系统通过智能体分工协作解决，详见 [LangGraph 多智能体框架实战](/posts/agent-multi-agent-framework)。常见模式：
+复杂系统通过智能体分工协作解决。常见模式：
 
 - **Supervisor**：一个主控 Agent 调度其他子 Agent
 - **Hierarchical**：层次化分工，类似公司组织架构

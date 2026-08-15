@@ -1,0 +1,34 @@
+/*
+ * 深色主题（默认）
+ * :root 即为深色，无需额外 class
+ */
+
+:root {
+  color-scheme: dark;
+  --bg: #101214;
+  --bg-2: #15191d;
+  --surface: #191f25;
+  --surface-2: #202832;
+  --paper: #f7f0df;
+  --ink: #f5efe2;
+  --text: #ece7dc;
+  --muted: #aaa296;
+  --faint: #776f65;
+  --line: rgba(245, 239, 226, 0.12);
+  --line-strong: rgba(245, 239, 226, 0.22);
+  --accent: #ffb86b;
+  --accent-2: #7dd3c7;
+  --danger: #fb7185;
+  --ok: #86efac;
+  --code-bg: #0f141a;
+  --code-text: #e5e7eb;
+  --code-border: rgba(245, 239, 226, 0.14);
+  --code-label: #9ca3af;
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+  --shadow-soft: 0 12px 36px rgba(0, 0, 0, 0.18);
+}
+
+/* Shiki 代码高亮 — 深色（默认） */
+.shiki code .line span {
+  color: var(--shiki-default, #e5e7eb);
+}

@@ -1,94 +1,8 @@
 @import "tailwindcss";
-
-:root {
-  color-scheme: dark;
-  --bg: #101214;
-  --bg-2: #15191d;
-  --surface: #191f25;
-  --surface-2: #202832;
-  --paper: #f7f0df;
-  --ink: #f5efe2;
-  --text: #ece7dc;
-  --muted: #aaa296;
-  --faint: #776f65;
-  --line: rgba(245, 239, 226, 0.12);
-  --line-strong: rgba(245, 239, 226, 0.22);
-  --accent: #ffb86b;
-  --accent-2: #7dd3c7;
-  --danger: #fb7185;
-  --ok: #86efac;
-  --code-bg: #0f141a;
-  --code-text: #e5e7eb;
-  --code-border: rgba(245, 239, 226, 0.14);
-  --code-label: #9ca3af;
-  --shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
-  --shadow-soft: 0 12px 36px rgba(0, 0, 0, 0.18);
-  --font-sans: "Inter", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", "SFMono-Regular", "Cascadia Code", ui-monospace, monospace;
-  --wide: 1160px;
-  --read: 760px;
-  --nav-h: 72px;
-  --radius: 20px;
-  --radius-sm: 12px;
-  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --cursor-x: 50vw;
-  --cursor-y: 50vh;
-  --tilt-x: 0deg;
-  --tilt-y: 0deg;
-  --spot-x: 50%;
-  --spot-y: 0%;
-  --theme-x: calc(100vw - 74px);
-  --theme-y: 42px;
-}
-
-html.light {
-  color-scheme: light;
-  --bg: #f5f1e8;
-  --bg-2: #ebe5d8;
-  --surface: #fffaf0;
-  --surface-2: #eee6d7;
-  --paper: #ffffff;
-  --ink: #1f2428;
-  --text: #22272b;
-  --muted: #606870;
-  --faint: #8b8378;
-  --line: rgba(31, 36, 40, 0.11);
-  --line-strong: rgba(31, 36, 40, 0.2);
-  --accent: #b35c00;
-  --accent-2: #0f8f83;
-  --code-bg: #fffdf8;
-  --code-text: #24292e;
-  --code-border: rgba(31, 36, 40, 0.18);
-  --code-label: #59636e;
-  --shadow: 0 24px 80px rgba(31, 36, 40, 0.1);
-  --shadow-soft: 0 12px 36px rgba(31, 36, 40, 0.08);
-}
-
-html.cyber {
-  color-scheme: dark;
-  --bg: #07110f;
-  --bg-2: #091a16;
-  --surface: #0b211c;
-  --surface-2: #102d25;
-  --paper: #06100d;
-  --ink: #dfffee;
-  --text: #e7fff1;
-  --muted: #94b9a6;
-  --faint: #618274;
-  --line: rgba(137, 255, 194, 0.13);
-  --line-strong: rgba(137, 255, 194, 0.25);
-  --accent: #7dffb5;
-  --accent-2: #55d9f2;
-  --danger: #ff7d91;
-  --ok: #9affc4;
-  --code-bg: #061411;
-  --code-text: #dbf7e9;
-  --code-border: rgba(125, 255, 181, 0.2);
-  --code-label: #76b99a;
-  --shadow: 0 24px 80px rgba(0, 10, 7, 0.42);
-  --shadow-soft: 0 12px 36px rgba(0, 10, 7, 0.3);
-}
+@import "./themes/base.css";
+@import "./themes/dark.css";
+@import "./themes/light.css";
+@import "./themes/cyber.css";
 
 *,
 *::before,
@@ -119,13 +33,6 @@ body {
     color 420ms var(--ease),
     background-color 420ms var(--ease),
     border-color 420ms var(--ease);
-}
-
-html.cyber body {
-  background:
-    linear-gradient(180deg, rgba(125, 255, 181, 0.035), transparent 22%),
-    linear-gradient(90deg, rgba(85, 217, 242, 0.025), transparent 38%, rgba(125, 255, 181, 0.02)),
-    linear-gradient(180deg, var(--bg), var(--bg-2));
 }
 
 button,
@@ -520,7 +427,6 @@ html.theme-switching .theme-transition-sheen {
 }
 
 .theme-toggle {
-  --theme-index: 1;
   --track-cols: 3;
   position: relative;
   width: 110px;
@@ -542,20 +448,6 @@ html.theme-switching .theme-transition-sheen {
     background 220ms var(--ease),
     box-shadow 220ms var(--ease);
 }
-
-.theme-toggle[data-theme="light"] {
-  --theme-index: 0;
-}
-
-.theme-toggle[data-theme="dark"] {
-  --theme-index: 1;
-}
-
-.theme-toggle[data-theme="cyber"] {
-  --theme-index: 2;
-}
-
-
 
 .theme-toggle-track {
   position: relative;
@@ -590,6 +482,7 @@ html.theme-switching .theme-transition-sheen {
     0 4px 12px color-mix(in srgb, black 22%, transparent),
     0 1px 2px color-mix(in srgb, black 16%, transparent),
     inset 0 1px 0 color-mix(in srgb, white 28%, transparent);
+  transform: translateX(calc(var(--theme-index) * (100% / var(--track-cols))));
   transition:
     transform 260ms var(--ease-out),
     background 220ms var(--ease),
@@ -619,6 +512,15 @@ html.theme-switching .theme-transition-sheen {
 }
 
 .theme-toggle-option.active {
+  color: var(--bg);
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 初始激活状态：基于 html 主题类，在 JS 执行前就正确显示 */
+html.light .theme-toggle-option:nth-child(1),
+html.dark .theme-toggle-option:nth-child(2),
+html.cyber .theme-toggle-option:nth-child(3) {
   color: var(--bg);
   opacity: 1;
   transform: scale(1);
@@ -2869,17 +2771,7 @@ html.theme-switching .theme-transition-sheen {
   font-family: var(--font-mono) !important;
 }
 
-.shiki code .line span {
-  color: var(--shiki-default, #e5e7eb);
-}
-
-html.light .shiki code .line span {
-  color: var(--shiki-light, #172033);
-}
-
-html.cyber .shiki code .line span {
-  color: var(--shiki-cyber, var(--shiki-default, #dbf7e9));
-}
+/* 主题相关 shiki 颜色见 themes/dark.css、light.css、cyber.css */
 
 .shiki .line {
   display: block;
@@ -3096,6 +2988,7 @@ pre[class*="language-"]::before,
   .theme-toggle-indicator {
     top: 3px;
     left: 4.5px;
+    transform: translateX(calc(var(--theme-index) * (100% / var(--track-cols))));
   }
 
   .nav-center {

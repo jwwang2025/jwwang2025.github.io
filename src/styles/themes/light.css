@@ -1,0 +1,32 @@
+/*
+ * 浅色主题
+ * 通过 html.light 激活
+ */
+
+html.light {
+  color-scheme: light;
+  --bg: #f5f1e8;
+  --bg-2: #ebe5d8;
+  --surface: #fffaf0;
+  --surface-2: #eee6d7;
+  --paper: #ffffff;
+  --ink: #1f2428;
+  --text: #22272b;
+  --muted: #606870;
+  --faint: #8b8378;
+  --line: rgba(31, 36, 40, 0.11);
+  --line-strong: rgba(31, 36, 40, 0.2);
+  --accent: #b35c00;
+  --accent-2: #0f8f83;
+  --code-bg: #fffdf8;
+  --code-text: #24292e;
+  --code-border: rgba(31, 36, 40, 0.18);
+  --code-label: #59636e;
+  --shadow: 0 24px 80px rgba(31, 36, 40, 0.1);
+  --shadow-soft: 0 12px 36px rgba(31, 36, 40, 0.08);
+}
+
+/* Shiki 代码高亮 — 浅色 */
+html.light .shiki code .line span {
+  color: var(--shiki-light, #172033);
+}

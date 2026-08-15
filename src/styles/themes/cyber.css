@@ -1,0 +1,42 @@
+/*
+ * 终端主题（Cyber）
+ * 通过 html.cyber 激活
+ */
+
+html.cyber {
+  color-scheme: dark;
+  --bg: #07110f;
+  --bg-2: #091a16;
+  --surface: #0b211c;
+  --surface-2: #102d25;
+  --paper: #06100d;
+  --ink: #dfffee;
+  --text: #e7fff1;
+  --muted: #94b9a6;
+  --faint: #618274;
+  --line: rgba(137, 255, 194, 0.13);
+  --line-strong: rgba(137, 255, 194, 0.25);
+  --accent: #7dffb5;
+  --accent-2: #55d9f2;
+  --danger: #ff7d91;
+  --ok: #9affc4;
+  --code-bg: #061411;
+  --code-text: #dbf7e9;
+  --code-border: rgba(125, 255, 181, 0.2);
+  --code-label: #76b99a;
+  --shadow: 0 24px 80px rgba(0, 10, 7, 0.42);
+  --shadow-soft: 0 12px 36px rgba(0, 10, 7, 0.3);
+}
+
+/* 终端主题独有的背景叠加层 */
+html.cyber body {
+  background:
+    linear-gradient(180deg, rgba(125, 255, 181, 0.035), transparent 22%),
+    linear-gradient(90deg, rgba(85, 217, 242, 0.025), transparent 38%, rgba(125, 255, 181, 0.02)),
+    linear-gradient(180deg, var(--bg), var(--bg-2));
+}
+
+/* Shiki 代码高亮 — 终端 */
+html.cyber .shiki code .line span {
+  color: var(--shiki-cyber, var(--shiki-default, #dbf7e9));
+}

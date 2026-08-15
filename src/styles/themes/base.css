@@ -1,0 +1,25 @@
+/*
+ * 主题无关的共享设计变量
+ * 字体、尺寸、缓动、光标位置等所有主题通用的 token
+ */
+
+:root {
+  --theme-index: 1;
+  --font-sans: "Inter", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", "Cascadia Code", ui-monospace, monospace;
+  --wide: 1160px;
+  --read: 760px;
+  --nav-h: 72px;
+  --radius: 20px;
+  --radius-sm: 12px;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --cursor-x: 50vw;
+  --cursor-y: 50vh;
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --spot-x: 50%;
+  --spot-y: 0%;
+  --theme-x: calc(100vw - 74px);
+  --theme-y: 42px;
+}

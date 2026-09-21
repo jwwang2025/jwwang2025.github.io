@@ -1,40 +1,76 @@
-# Startint.log
+<p align="center">
+  <img src="assets/readme/hero.svg" alt="Startint.log - AI Infra & Systems 技术博客" width="100%">
+</p>
 
-Startint 的个人技术博客，记录 AI 应用开发、Agent 架构、RAG 系统和知识图谱的技术笔记。
+<p align="center">
+  <a href="https://jwwang2025.github.io"><strong>访问博客</strong></a>
+  ·
+  <a href="https://jwwang2025.github.io/posts">文章库</a>
+  ·
+  <a href="https://jwwang2025.github.io/tags">主题索引</a>
+  ·
+  <a href="https://github.com/jwwang2025">GitHub</a>
+</p>
 
-基于 Astro 4 与 Content Collections 构建，静态生成后部署到 GitHub Pages。
+<br>
 
-[访问博客](https://jwwang2025.github.io) · [文章库](https://jwwang2025.github.io/posts) · [主题索引](https://jwwang2025.github.io/tags) · [GitHub](https://github.com/jwwang2025)
+## 👋 关于博主
 
-## 关于博主
+**Startint**，北京理工大学在读硕士，专注于 AI 应用开发与系统设计。关注 AI Infra、RAG 系统、知识图谱与 Agent 架构的技术实践。
 
-Startint，北京理工大学在读硕士。
+> 记录学习路径，沉淀系统思考。
 
-## 内容地图
+<br>
 
-- **AI 应用开发**：基于 LangGraph 和 LangChain 的多智能体系统设计与实现
-- **知识图谱**：知识图谱构建、实体抽取、关系推理与图数据库应用
-- **RAG 系统**：向量检索、多模态检索、重排序与 RAG 系统优化
-- **LLM 推理优化**：模型量化、推理加速和部署策略
-- **AI Infra**：从模型基础到推理服务和 Agent 平台
+## 🗺️ 知识地图
 
-文章通过首页知识地图组织学习路径，文章库支持关键词搜索和标签筛选。
+<img src="assets/readme/knowledge-map.svg" alt="知识地图 - 四大技术领域" width="100%">
 
-## 近期文章
+博客内容围绕四大核心领域展开，通过首页知识地图组织学习路径，文章库支持关键词搜索和标签筛选。
 
-- **LangGraph 多智能体框架实战**：构建智能研究助手系统 · 2026-07-21
-- **知识图谱增强的智能问答系统**：融合结构化与非结构化数据 · 2026-07-20
-- **LLM 推理优化实战**：从模型量化到部署加速 · 2026-07-19
+| 领域 | 核心方向 |
+|------|---------|
+| **AI Infrastructure** | GPU 集群、分布式训练、K8s 部署、MLOps 实践、推理服务 |
+| **Knowledge Graph** | 图神经网络、RAG 检索增强、知识表示学习、实体抽取 |
+| **RAG System** | 向量数据库、检索策略、上下文管理、评估优化 |
+| **System Design** | 高可用架构、性能优化、微服务、云原生 |
 
-## 技术栈
+<br>
 
-- Astro 4、TypeScript
-- Astro Content Collections、Markdown/MDX
-- Tailwind CSS 4
-- KaTeX 数学公式渲染、Shiki 代码高亮
-- GitHub Actions 自动部署
+## 📝 近期文章
 
-## 项目结构
+<img src="assets/readme/recent-posts.svg" alt="近期文章" width="100%">
+
+- **[LangGraph 多智能体框架实战](https://jwwang2025.github.io/posts/2026/07/agent-multi-agent-framework)** — 构建智能研究助手系统，深入理解多 Agent 协作模式与状态管理机制
+- **[知识图谱增强的智能问答系统](https://jwwang2025.github.io/posts/2026/07/rag-knowledge-graph)** — 融合结构化与非结构化数据，探索知识图谱在 RAG 系统中的应用实践
+- **[LLM 推理优化实战](https://jwwang2025.github.io/posts/2026/07/llm-inference-optimization)** — 从模型量化到部署加速，全面解析大模型推理性能优化
+
+[查看全部文章 →](https://jwwang2025.github.io/posts)
+
+<br>
+
+## 🛠️ 技术栈
+
+<img src="assets/readme/tech-stack.svg" alt="技术栈" width="100%">
+
+**核心框架**
+- **Astro 4** — 静态站点生成，Content Collections 管理内容
+- **TypeScript** — 类型安全的全栈开发
+- **Tailwind CSS 4** — 原子化 CSS，支持亮/暗主题切换
+
+**内容与渲染**
+- **Astro Content Collections** — 类型安全的 Markdown/MDX 内容管理
+- **KaTeX** — 数学公式渲染
+- **Shiki** — 语法高亮
+
+**部署与工具**
+- **GitHub Actions** — CI/CD 自动构建部署
+- **GitHub Pages** — 静态站点托管
+- **Node.js 22+** — 开发环境
+
+<br>
+
+## 📁 项目结构
 
 ```
 .
@@ -44,28 +80,46 @@ Startint，北京理工大学在读硕士。
 │   ├── pages/               # 首页、文章、标签、友链和关于页面
 │   ├── content/posts/       # Markdown 文章（按年份/月份组织）
 │   ├── content/config.ts    # Content Collections schema
-│   ├── styles/main.css      # 全站主题、排版和响应式样式
+│   ├── styles/              # 全站主题、排版和响应式样式
 │   ├── utils/blog.ts        # 文章列表、标签、目录等工具函数
 │   └── config.ts            # 作者、导航和站点信息
-├── public/                  # 静态资源（logo、avatar）
+├── public/                  # 静态资源（logo、avatar、文章配图）
 ├── astro.config.mjs         # Astro 配置
 └── package.json             # 依赖和脚本
 ```
 
-## 本地开发
+<br>
 
-要求 Node.js 22+。
+## 🚀 快速开始
+
+> 要求 Node.js 22+
 
 ```bash
+# 安装依赖
 npm install
-npm run dev       # 默认 http://localhost:4321
-npm run build     # 静态产物输出到 dist/
-npm run preview   # 预览生产构建
+
+# 启动开发服务器（默认 http://localhost:4321）
+npm run dev
+
+# 构建生产版本（输出到 dist/）
+npm run build
+
+# 预览生产构建
+npm run preview
 ```
 
-## 写新文章
+<br>
 
-在 `src/content/posts/` 下新建 Markdown 文件，建议按年份/月份组织目录，例如 `src/content/posts/2026/07/agent-memory.md` 对应 `/posts/2026/07/agent-memory`。
+## ✍️ 写新文章
+
+在 `src/content/posts/` 下新建 Markdown 文件，建议按年份/月份组织目录：
+
+```
+src/content/posts/2026/07/agent-memory.md
+→ https://jwwang2025.github.io/posts/2026/07/agent-memory
+```
+
+**文章 Frontmatter 模板：**
 
 ```yaml
 ---
@@ -81,23 +135,29 @@ readingTime: 10
 ---
 ```
 
-**可见性字段**：
+**可见性控制：**
 
-- `draft: true`：草稿，不进入公开列表
-- `hidden: true`：保留页面内容，但不进入文章列表
-- `published: false`：暂不发布
+| 字段 | 效果 |
+|------|------|
+| `draft: true` | 草稿，不进入公开列表 |
+| `hidden: true` | 保留页面内容，但不进入文章列表 |
+| `published: false` | 暂不发布 |
 
-## 部署
+<br>
 
-构建产物位于 `dist/` 目录，通过 GitHub Actions 自动部署到 GitHub Pages。
+## 📦 部署
 
-手动部署：
+构建产物位于 `dist/` 目录，通过 GitHub Actions 自动部署到 GitHub Pages（配置见 `.github/workflows/deploy.yml`）。
+
+**手动部署：**
 
 ```bash
 npm run build
 npx gh-pages --dotfiles -d dist
 ```
 
-## License
+<br>
 
-MIT
+## 📄 License
+
+MIT © Startint

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 260" width="100%" role="img" aria-label="近期文章">
+  <defs>
+    <filter id="articleShadow" x="-5%" y="-10%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="#1E293B" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- 文章卡片 1 -->
+  <g transform="translate(0, 20)" filter="url(#articleShadow)">
+    <rect x="0" y="0" width="380" height="200" rx="14" fill="white" stroke="#E2E8F0" stroke-width="1"/>
+    <!-- 顶部色条 -->
+    <rect x="0" y="0" width="380" height="6" rx="3" fill="#7DD3FC"/>
+    
+    <!-- 标签 -->
+    <g transform="translate(24, 28)">
+      <rect x="0" y="0" width="72" height="24" rx="12" fill="#F0F9FF"/>
+      <text x="36" y="16" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" 
+            font-size="11" font-weight="600" fill="#0369A1" text-anchor="middle">
+        LLM Agent
+      </text>
+    </g>
+    
+    <!-- 标题 -->
+    <text x="24" y="78" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" 
+          font-size="18" font-weight="700" fill="#1E293B">
+      LangGraph 多智能体框架实战
+    </text>
+    
+    <!-- 描述 -->
+    <text x="24" y="108" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" 
+          font-size="13" fill="#64748B">
+      构建智能研究助手系统，深入理解多 Agent
+    </text>
+    <text x="24" y="128" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" 
+          font-size="13" fill="#64748B">
+      协作模式与状态管理机制
+    </text>
+    
+    <!-- 底部信息 -->
+    <g transform="translate(24, 168)">
+      <circle cx="8" cy="8" r="8" fill="#E2E8F0"/>
+      <text x="24" y="12" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+            font-size="12" fill="#94A3B8">
+        2026-07-21 · 12 min
+      </text>
+    </g>
+    
+    <!-- 箭头 -->
+    <g transform="translate(340, 160)">
+      <circle cx="0" cy="0" r="16" fill="#F1F5F9"/>
+      <path d="M-5 -4 L3 0 L-5 4" stroke="#64748B" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <!-- 文章卡片 2 -->
+  <g transform="translate(410, 20)" filter="url(#articleShadow)">
+    <rect x="0" y="0" width="380" height="200" rx="14" fill="white" stroke="#E2E8F0" stroke-width="1"/>
+    <rect x="0" y="0" width="380" height="6" rx="3" fill="#A78BFA"/>
+    
+    <g transform="translate(24, 28)">
+      <rect x="0" y="0" width="88" height="24" rx="12" fill="#F5F3FF"/>
+      <text x="44" y="16" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" 
+            font-size="11" font-weight="600" fill="#7C3AED" text-anchor="middle">
+        知识图谱
+      </text>
+    </g>
+    
+    <text x="24" y="78" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" 
+          font-size="18" font-weight="700" fill="#1E293B">
+      知识图谱增强的智能问答
+    </text>
+    
+    <text x="24" y="108" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" 
+          font-size="13" fill="#64748B">
+      融合结构化与非结构化数据，探索知识图谱
+    </text>
+    <text x="24" y="128" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" 
+          font-size="13" fill="#64748B">
+      在 RAG 系统中的应用实践
+    </text>
+    
+    <g transform="translate(24, 168)">
+      <circle cx="8" cy="8" r="8" fill="#E2E8F0"/>
+      <text x="24" y="12" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+            font-size="12" fill="#94A3B8">
+        2026-07-20 · 15 min
+      </text>
+    </g>
+    
+    <g transform="translate(340, 160)">
+      <circle cx="0" cy="0" r="16" fill="#F1F5F9"/>
+      <path d="M-5 -4 L3 0 L-5 4" stroke="#64748B" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <!-- 文章卡片 3 -->
+  <g transform="translate(820, 20)" filter="url(#articleShadow)">
+    <rect x="0" y="0" width="380" height="200" rx="14" fill="white" stroke="#E2E8F0" stroke-width="1"/>
+    <rect x="0" y="0" width="380" height="6" rx="3" fill="#34D399"/>
+    
+    <g transform="translate(24, 28)">
+      <rect x="0" y="0" width="100" height="24" rx="12" fill="#ECFDF5"/>
+      <text x="50" y="16" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" 
+            font-size="11" font-weight="600" fill="#047857" text-anchor="middle">
+        推理优化
+      </text>
+    </g>
+    
+    <text x="24" y="78" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" 
+          font-size="18" font-weight="700" fill="#1E293B">
+      LLM 推理优化实战
+    </text>
+    
+    <text x="24" y="108" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" 
+          font-size="13" fill="#64748B">
+      从模型量化到部署加速，全面解析大模型
+    </text>
+    <text x="24" y="128" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif" 
+          font-size="13" fill="#64748B">
+      推理性能优化的核心技术
+    </text>
+    
+    <g transform="translate(24, 168)">
+      <circle cx="8" cy="8" r="8" fill="#E2E8F0"/>
+      <text x="24" y="12" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
+            font-size="12" fill="#94A3B8">
+        2026-07-19 · 18 min
+      </text>
+    </g>
+    
+    <g transform="translate(340, 160)">
+      <circle cx="0" cy="0" r="16" fill="#F1F5F9"/>
+      <path d="M-5 -4 L3 0 L-5 4" stroke="#64748B" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>

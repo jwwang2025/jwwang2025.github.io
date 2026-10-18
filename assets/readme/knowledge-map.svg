@@ -30,34 +30,34 @@
       <rect x="0" y="0" width="265" height="180" rx="14" fill="white" stroke="#E2E8F0" stroke-width="1"/>
       <rect x="0" y="0" width="265" height="5" rx="2.5" fill="#7DD3FC"/>
       
-      <!-- 图标：服务器/基础设施 -->
+      <!-- 图标：智能体气泡 -->
       <g transform="translate(24, 28)">
         <rect x="0" y="0" width="40" height="40" rx="10" fill="#F0F9FF"/>
-        <rect x="8" y="8" width="24" height="8" rx="2" fill="#1E293B"/>
-        <rect x="8" y="20" width="24" height="8" rx="2" fill="#1E293B"/>
-        <circle cx="30" cy="12" r="2" fill="#7DD3FC"/>
-        <circle cx="30" cy="24" r="2" fill="#7DD3FC"/>
+        <path d="M20 3 L21.6 8.4 L27 10 L21.6 11.6 L20 17 L18.4 11.6 L13 10 L18.4 8.4 Z" fill="#7DD3FC"/>
+        <path d="M9 15 H31 V30 H21 L15 35 V30 H9 Z" fill="#1E293B"/>
+        <circle cx="16" cy="22" r="1.5" fill="#7DD3FC"/>
+        <circle cx="24" cy="22" r="1.5" fill="#7DD3FC"/>
       </g>
       
       <text x="24" y="92" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif" 
             font-size="17" font-weight="700" fill="#1E293B">
-        AI Infrastructure
+        AI Agent
       </text>
       <text x="24" y="118" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif" 
             font-size="13" fill="#64748B">
-        GPU 集群 · 分布式训练 · K8s 部署
+        智能体框架 · 工具调用 · 记忆系统
       </text>
       <text x="24" y="138" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif" 
             font-size="13" fill="#64748B">
-        MLOps 实践 · 推理服务
+        多智能体协作
       </text>
       
       <!-- 标签 -->
       <g transform="translate(24, 156)">
-        <rect x="0" y="0" width="52" height="18" rx="9" fill="#F0F9FF"/>
-        <text x="26" y="12" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif" 
+        <rect x="0" y="0" width="62" height="18" rx="9" fill="#F0F9FF"/>
+        <text x="31" y="12" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif" 
               font-size="10" font-weight="500" fill="#0369A1" text-anchor="middle">
-          ai-infra
+          llm-agent
         </text>
       </g>
     </g>
@@ -88,7 +88,7 @@
       </text>
       <text x="24" y="138" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif" 
             font-size="13" fill="#64748B">
-        知识表示学习 · 实体抽取
+        知识表示学习
       </text>
       
       <g transform="translate(24, 156)">
@@ -124,7 +124,7 @@
       </text>
       <text x="24" y="138" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif" 
             font-size="13" fill="#64748B">
-        上下文管理 · 评估优化
+        上下文管理 · 评估
       </text>
       
       <g transform="translate(24, 156)">

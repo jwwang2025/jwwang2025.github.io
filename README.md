@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/readme/hero.svg" alt="Startint.log - AI Infra & Systems 技术博客" width="100%">
+  <img src="assets/readme/hero.svg" alt="Startint.log - AI Agent · Full-Stack 技术博客" width="100%">
 </p>
 
 <p align="center">
@@ -16,7 +16,7 @@
 
 ## 👋 关于博主
 
-**Startint**，北京理工大学在读硕士，专注于 AI 应用开发与系统设计。关注 AI Infra、RAG 系统、知识图谱与 Agent 架构的技术实践。
+**Startint**，北京理工大学在读硕士，AI 应用开发工程师 · AI Agent 构建者。专注 Agent Memory、AI Agent 与全栈开发，关注记忆系统、RAG 应用与工程落地的技术实践。
 
 > 记录学习路径，沉淀系统思考。
 
@@ -30,10 +30,10 @@
 
 | 领域 | 核心方向 |
 |------|---------|
-| **AI Infrastructure** | GPU 集群、分布式训练、K8s 部署、MLOps 实践、推理服务 |
-| **Knowledge Graph** | 图神经网络、RAG 检索增强、知识表示学习、实体抽取 |
-| **RAG System** | 向量数据库、检索策略、上下文管理、评估优化 |
-| **System Design** | 高可用架构、性能优化、微服务、云原生 |
+| **AI Agent** | 智能体框架、工具调用、记忆系统与多智能体协作 |
+| **Knowledge Graph** | 图神经网络、RAG 检索增强、知识表示学习 |
+| **RAG System** | 向量数据库、检索策略、上下文管理与评估 |
+| **System Design** | 高可用架构、性能优化、微服务与云原生 |
 
 <br>
 
@@ -41,9 +41,10 @@
 
 <img src="assets/readme/recent-posts.svg" alt="近期文章" width="100%">
 
-- **[LangGraph 多智能体框架实战](https://jwwang2025.github.io/posts/2026/07/agent-multi-agent-framework)** — 构建智能研究助手系统，深入理解多 Agent 协作模式与状态管理机制
-- **[知识图谱增强的智能问答系统](https://jwwang2025.github.io/posts/2026/07/rag-knowledge-graph)** — 融合结构化与非结构化数据，探索知识图谱在 RAG 系统中的应用实践
-- **[LLM 推理优化实战](https://jwwang2025.github.io/posts/2026/07/llm-inference-optimization)** — 从模型量化到部署加速，全面解析大模型推理性能优化
+- **[LeetCode Hot 100 学习记录：算法刷题笔记与解题思路](https://jwwang2025.github.io/posts/2026/08/leetcode-hot-100-notes)** — 系统记录刷题过程、解题思路与代码实现，按题型分类整理，包含算法模板总结
+- **[RAG 学习笔记：检索增强生成的原理与工程实践](https://jwwang2025.github.io/posts/2026/08/rag-learning-notes)** — 系统整理 RAG 核心原理与完整流程，覆盖切分、向量化、检索、重排、生成等关键环节
+- **[Agent 学习笔记：从概念到落地的完整知识图谱](https://jwwang2025.github.io/posts/2026/08/agent-learning-notes)** — 系统整理 Agent 核心概念与关键能力，覆盖 ReAct、工具调用、记忆机制与多智能体协作
+- **[MiniMind 复现学习：2小时从零训练自己的语言模型](https://jwwang2025.github.io/posts/2026/07/minimind-reproduction)** — 复现 MiniMind 超小型语言模型训练全流程，深入理解 Transformer、MoE、DPO 等核心技术原理
 
 [查看全部文章 →](https://jwwang2025.github.io/posts)
 
@@ -83,7 +84,7 @@
 │   ├── styles/              # 全站主题、排版和响应式样式
 │   ├── utils/blog.ts        # 文章列表、标签、目录等工具函数
 │   └── config.ts            # 作者、导航和站点信息
-├── public/                  # 静态资源（logo、avatar、文章配图）
+├── public/                  # 静态资源（logo、avatar、技术图标、校徽、文章配图）
 ├── astro.config.mjs         # Astro 配置
 └── package.json             # 依赖和脚本
 ```

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <defs>
+    <mask id="cloudShellMask">
+      <rect width="24" height="24" fill="black"/>
+      <circle cx="8.5" cy="9" r="5.5" fill="white"/>
+      <circle cx="14.5" cy="7" r="4.5" fill="white"/>
+      <circle cx="18.3" cy="11.3" r="3.8" fill="white"/>
+      <rect x="3.2" y="11.5" width="17.2" height="7" rx="3.5" fill="white"/>
+      <path d="M10.1 10.4 L13.3 12.8 L10.1 15.2" stroke="black" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="13.9" y="14.4" width="3.7" height="1.5" rx="0.75" fill="black"/>
+    </mask>
+  </defs>
+  <rect width="24" height="24" fill="#FFFFFF" mask="url(#cloudShellMask)"/>
+</svg>

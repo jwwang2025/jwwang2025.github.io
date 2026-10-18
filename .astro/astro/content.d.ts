@@ -187,6 +187,13 @@ declare module 'astro:content' {
   collection: "posts";
   data: InferEntrySchema<"posts">
 } & { render(): Render[".md"] };
+"2026/08/leetcode-hot-100-notes.md": {
+	id: "2026/08/leetcode-hot-100-notes.md";
+  slug: "2026/08/leetcode-hot-100-notes";
+  body: string;
+  collection: "posts";
+  data: InferEntrySchema<"posts">
+} & { render(): Render[".md"] };
 "2026/08/rag-learning-notes.md": {
 	id: "2026/08/rag-learning-notes.md";
   slug: "2026/08/rag-learning-notes";

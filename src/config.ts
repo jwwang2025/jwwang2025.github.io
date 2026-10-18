@@ -1,13 +1,13 @@
 export const siteConfig = {
   title: "Startint.log",
-  subtitle: "AI Infra & Systems",
-  description: "Startint的个人博客，记录 AI 基础设施、系统设计与技术思考",
+  subtitle: "AI Agent · Full-Stack",
+  description: "Startint的个人博客，记录 AI Agent、Agent Memory 与全栈开发的实践与思考",
   author: {
     name: "Startint",
     nameEn: "Startint",
-    role: "AI 应用开发工程师",
+    role: "AI 应用开发工程师 · AI Agent 构建者",
     avatar: "/avatar.png",
-    focus: ["AI Infra", "系统设计", "模型优化", "推理部署"],
+    focus: ["AI Agent", "Agent Memory", "全栈开发"],
     links: {
       github: "https://github.com/jwwang2025",
       zhihu: "https://www.zhihu.com/people/jwwang2025",
@@ -23,11 +23,11 @@ export const siteConfig = {
   ],
   knowledgeMap: [
     {
-      id: "ai-infra",
-      label: "AI Infrastructure",
-      title: "AI 基础设施",
-      description: "GPU 集群、分布式训练、K8s 部署与 MLOps 实践",
-      link: "/posts?topic=ai-infra",
+      id: "llm-agent",
+      label: "AI Agent",
+      title: "AI Agent",
+      description: "智能体框架、工具调用、记忆系统与多智能体协作",
+      link: "/posts?topic=llm-agent",
     },
     {
       id: "knowledge-graph",

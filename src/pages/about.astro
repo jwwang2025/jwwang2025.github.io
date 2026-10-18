@@ -7,6 +7,23 @@ import { getAllPosts } from '@/utils/blog'
 
 const posts = await getAllPosts()
 const recentPosts = posts.slice(0, 5)
+
+const tools = [
+  { name: 'Python', icon: '/icons/python.svg' },
+  { name: 'Java', icon: '/icons/openjdk.svg' },
+  { name: 'PyTorch', icon: '/icons/pytorch.svg' },
+  { name: 'FastAPI', icon: '/icons/fastapi.svg' },
+  { name: 'Cloud Shell', icon: '/icons/cloud-shell.svg' },
+  { name: 'TypeScript', icon: '/icons/typescript.svg' },
+  { name: 'JavaScript', icon: '/icons/javascript.svg' },
+  { name: 'Hugging Face', icon: '/icons/huggingface.svg' },
+  { name: 'Neovim', icon: '/icons/neovim.svg' },
+  { name: 'Git', icon: '/icons/git.svg' },
+  { name: 'GitHub', icon: '/icons/github.svg' },
+  { name: 'Linux', icon: '/icons/linux.svg' },
+  { name: 'VS Code', icon: '/icons/visualstudiocode.svg' },
+  { name: 'OpenAI', icon: '/icons/openai.svg' },
+]
 ---
 
 <BaseLayout title="关于" description="关于我的个人信息" pageClass="about-page">
@@ -18,7 +35,7 @@ const recentPosts = posts.slice(0, 5)
           <h1>{siteConfig.author.name}</h1>
           <p class="about-en">{siteConfig.author.nameEn}</p>
           <p class="about-summary">
-            北京理工大学在读硕士，AI 应用开发工程师。专注于 AI 基础设施、系统设计与模型优化方向。热爱技术，乐于分享，希望通过博客记录成长轨迹，与大家共同进步。
+            北京理工大学在读硕士，AI 应用开发工程师 · AI Agent 构建者。专注于 Agent Memory、AI Agent 与全栈开发方向。热爱技术，乐于分享，希望通过博客记录成长轨迹，与大家共同进步。
           </p>
           <div class="about-actions">
             <a href={siteConfig.author.links.github} class="text-link">GitHub</a>
@@ -59,27 +76,27 @@ const recentPosts = posts.slice(0, 5)
           <div class="focus-grid">
             <div class="focus-card">
               <small>01</small>
-              <span>AI Infra</span>
-              <h3>AI 基础设施</h3>
-              <p>GPU 集群、分布式训练、K8s 部署与 MLOps 实践</p>
+              <span>Agent Memory</span>
+              <h3>记忆系统</h3>
+              <p>记忆系统、上下文工程与长期记忆管理，让 Agent 在试错与迭代中持续累积经验</p>
             </div>
             <div class="focus-card">
               <small>02</small>
-              <span>Model Optim</span>
-              <h3>模型优化</h3>
-              <p>量化压缩、推理加速、显存优化与性能调优</p>
+              <span>AI Agent</span>
+              <h3>AI Agent 构建</h3>
+              <p>智能体框架、工具调用、规划与多智能体协作，把模型能力变成可用的产品</p>
             </div>
             <div class="focus-card">
               <small>03</small>
-              <span>System Design</span>
-              <h3>系统设计</h3>
-              <p>高可用架构、微服务设计、云原生与可观测性</p>
+              <span>Full-Stack</span>
+              <h3>全栈开发</h3>
+              <p>TypeScript / Python 一体化开发，从接口、前端到部署交付完整应用</p>
             </div>
             <div class="focus-card">
               <small>04</small>
-              <span>LLM & Agent</span>
-              <h3>大模型应用</h3>
-              <p>RAG 系统、智能体框架、多模态融合与工程落地</p>
+              <span>AI 应用</span>
+              <h3>RAG 应用落地</h3>
+              <p>RAG、评估体系与工程化实践，关注真实场景中的效果与稳定性</p>
             </div>
           </div>
         </section>
@@ -87,18 +104,13 @@ const recentPosts = posts.slice(0, 5)
         <section class="site-block reveal-item">
           <p class="block-eyebrow">技术栈</p>
           <div class="stack-panel">
-            <span class="skill-chip">Python</span>
-            <span class="skill-chip">TypeScript</span>
-            <span class="skill-chip">Go</span>
-            <span class="skill-chip">Vue</span>
-            <span class="skill-chip">React</span>
-            <span class="skill-chip">Node.js</span>
-            <span class="skill-chip">Docker</span>
-            <span class="skill-chip">Kubernetes</span>
-            <span class="skill-chip">PyTorch</span>
-            <span class="skill-chip">TensorFlow</span>
-            <span class="skill-chip">Redis</span>
-            <span class="skill-chip">PostgreSQL</span>
+            <div class="stack-icons">
+              {tools.map((tool) => (
+                <span class="stack-icon">
+                  <img src={tool.icon} alt={tool.name} title={tool.name} loading="lazy" />
+                </span>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -107,27 +119,23 @@ const recentPosts = posts.slice(0, 5)
           <div class="timeline">
             <div class="timeline-card">
               <div class="timeline-logo">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                </svg>
+                <img src="/badges/bit-badge.svg" alt="北京理工大学校徽" />
               </div>
               <div>
-                <time>2024 - 至今</time>
-                <h3>北京理工大学 <span>硕士</span></h3>
-                <p class="timeline-role">AI 应用开发工程师</p>
-                <p class="timeline-desc">研究方向：AI 基础设施与模型优化</p>
+                <time>2026.09 – 2029.06</time>
+                <h3>北京理工大学 <span>计算机硕士在读</span></h3>
+                <p class="timeline-role">AI 应用开发工程师 · AI Agent 构建者</p>
+                <p class="timeline-desc">研究方向：Agent Memory 与 AI Agent 工程实践</p>
               </div>
             </div>
             <div class="timeline-card">
               <div class="timeline-logo">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                </svg>
+                <img src="/badges/xju-badge.png" alt="新疆大学校徽" />
               </div>
               <div>
-                <time>2020 - 2024</time>
-                <h3>北京理工大学 <span>学士</span></h3>
-                <p class="timeline-role">计算机科学与技术</p>
+                <time>2022.09 – 2026.06</time>
+                <h3>新疆大学 <span>软件工程本科</span></h3>
+                <p class="timeline-role">软件工程专业</p>
                 <p class="timeline-desc">主修课程：数据结构、操作系统、计算机网络、人工智能等</p>
               </div>
             </div>
@@ -138,10 +146,10 @@ const recentPosts = posts.slice(0, 5)
           <p class="block-eyebrow">当前状态</p>
           <div class="now-card">
             <p>
-              📚 正在学习：模型推理优化与分布式训练<br/>
-              💻 正在开发：AI 推理引擎与 RAG 系统<br/>
+              📚 正在学习：Agent Memory 与上下文工程<br/>
+              💻 正在开发：Agent Memory 工具与全栈应用<br/>
               📝 正在写作：MiniMind 复现系列文章<br/>
-              🎯 目标：成为优秀的 AI 系统工程师
+              🎯 目标：成为优秀的 AI Agent 构建者
             </p>
           </div>
         </section>

@@ -1752,6 +1752,40 @@ html.cyber .theme-toggle-option:nth-child(3) {
   padding: 22px;
 }
 
+.stack-icons {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+}
+
+.stack-icon {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface-2) 88%, white 4%);
+  transition: transform 0.18s ease, border-color 0.18s ease;
+}
+
+.stack-icon img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.stack-icon:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+
+@media (max-width: 560px) {
+  .stack-icons {
+    grid-template-columns: repeat(auto-fill, minmax(48px, 1fr));
+  }
+}
+
 .timeline {
   position: relative;
   display: grid;
@@ -1795,8 +1829,8 @@ html.cyber .theme-toggle-option:nth-child(3) {
 }
 
 .timeline-logo img {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
 }
 

@@ -937,7 +937,6 @@ html.cyber .theme-toggle-option:nth-child(3) {
 .focus-card,
 .about-profile,
 .about-snapshot,
-.now-card,
 .stack-panel,
 .link-callout {
   position: relative;
@@ -962,7 +961,6 @@ html.cyber .theme-toggle-option:nth-child(3) {
 .about-profile::before,
 .about-snapshot::before,
 .focus-card::before,
-.now-card::before,
 .stack-panel::before,
 .post-nav-item::before,
 .link-callout::before {
@@ -989,7 +987,6 @@ html.cyber .theme-toggle-option:nth-child(3) {
 .about-profile > *,
 .about-snapshot > *,
 .focus-card > *,
-.now-card > *,
 .stack-panel > *,
 .post-nav-item > *,
 .link-callout > * {
@@ -1003,7 +1000,6 @@ html.cyber .theme-toggle-option:nth-child(3) {
 .about-profile:hover,
 .about-snapshot:hover,
 .focus-card:hover,
-.now-card:hover,
 .stack-panel:hover {
   transform:
     perspective(900px)
@@ -1024,7 +1020,6 @@ html.cyber .theme-toggle-option:nth-child(3) {
 .about-profile:hover::before,
 .about-snapshot:hover::before,
 .focus-card:hover::before,
-.now-card:hover::before,
 .stack-panel:hover::before,
 .post-nav-item:hover::before,
 .link-callout:hover::before {
@@ -1541,7 +1536,6 @@ html.cyber .theme-toggle-option:nth-child(3) {
 .about-profile,
 .about-snapshot,
 .focus-card,
-.now-card,
 .stack-panel {
   position: relative;
   overflow: hidden;
@@ -1864,17 +1858,6 @@ html.cyber .theme-toggle-option:nth-child(3) {
   margin: 8px 0 0;
   color: var(--muted);
   font-size: 0.92rem;
-}
-
-.now-card {
-  padding: 22px;
-  line-height: 1.8;
-}
-
-.now-card p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.94rem;
 }
 
 .friends-grid {

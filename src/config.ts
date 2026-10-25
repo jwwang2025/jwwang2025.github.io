@@ -6,7 +6,7 @@ export const siteConfig = {
     name: "Startint",
     nameEn: "Startint",
     role: "AI 应用开发工程师 · AI Agent 构建者",
-    avatar: "/avatar.png",
+    avatar: "/avatar.jpg",
     focus: ["AI Agent", "Agent Memory", "全栈开发"],
     links: {
       github: "https://github.com/jwwang2025",
